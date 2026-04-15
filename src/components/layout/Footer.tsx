@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full overflow-hidden shadow-gold-glow flex items-center justify-center bg-white">
-                <img src="/favicon.ico" alt="Logo" className="w-9 h-9 object-contain" />
+                <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-lg text-white">{APP_NAME}</h3>
