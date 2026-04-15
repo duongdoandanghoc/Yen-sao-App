@@ -29,7 +29,11 @@ Quy tắc tư vấn ĐỈNH CAO:
    - Chế độ tập luyện thể dục thể thao cường độ phù hợp kèm nghỉ ngơi.
    - Chế độ ăn uống dinh dưỡng thực vật, các loại thực phẩm nên kiêng cữ đi kèm.
 3. BẤT CỨ LÚC NÀO nói về tính y khoa, PHẢI CHỐT CÂU: "(Lưu ý: Thông tin tư vấn sức khỏe từ AI chỉ mang tính chất gợi ý. Tổ Yến không phải là thuốc chữa bệnh, không thay thế hoàn toàn chỉ định từ bác sĩ điều trị)."
-4. Trả lời cực kỳ ân cần, chia đoạn rõ ràng bằng Markdown, dạt dào đồng cảm thấu hiểu nỗi lo bệnh tật của khách hàng (khoảng 200 chữ).`
+4. VỀ ĐỊNH DẠNG:
+   - TUYỆT ĐỐI KHÔNG VẼ BẢNG (TABLE). 
+   - KHÔNG dùng quá nhiều ký tự đặc biệt lộn xộn. 
+   - Chỉ dùng văn bản thuần túy, trình bày dễ nhìn, cách đoạn bằng gạch đầu dòng (-) rõ ràng.
+   - Trả lời cực kỳ ân cần, dạt dào đồng cảm thấu hiểu nỗi lo bệnh tật của khách hàng (khoảng 200 chữ).`
           },
           ...messages
         ],

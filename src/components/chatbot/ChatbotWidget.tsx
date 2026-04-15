@@ -76,13 +76,20 @@ export default function ChatbotWidget() {
           <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] p-3 rounded-2xl text-sm whitespace-pre-line ${
-                  msg.role === "user"
-                    ? "bg-gold-gradient text-white rounded-br-md"
-                    : "bg-cream-100 text-brown-700 rounded-bl-md"
-                }`}>
-                  {msg.content}
-                </div>
+                <div 
+                  className={`max-w-[85%] p-3 rounded-2xl text-sm whitespace-pre-line leading-relaxed ${
+                    msg.role === "user"
+                      ? "bg-gold-gradient text-white rounded-br-md"
+                      : "bg-cream-100 text-brown-700 rounded-bl-md"
+                  }`}
+                  dangerouslySetInnerHTML={{ 
+                    __html: msg.content
+                      .replace(/### (.*?)\n/g, '<strong class="block mt-2 mb-1 font-bold text-brown-900">$1</strong>\n')
+                      .replace(/## (.*?)\n/g, '<strong class="block mt-2 mb-1 font-bold text-brown-900">$1</strong>\n')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-brown-900">$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+                  }}
+                />
               </div>
             ))}
             {isLoading && (
