@@ -14,7 +14,7 @@ export default function HeroSection() {
           <div className="text-center lg:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 rounded-full mb-6">
               <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-primary-700">Yến Sào Bình An - Thương hiệu uy tín, chất lượng hàng đầu</span>
+              <span className="text-sm font-medium text-primary-700">Yến Sào Bình An - 100% Yến sào tự nhiên</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brown-900 leading-tight">
@@ -59,8 +59,17 @@ export default function HeroSection() {
           {/* Hero Image Placeholder */}
           <div className="hidden lg:flex justify-center animate-slide-up">
             <div className="relative">
-              <div className="w-80 h-80 xl:w-96 xl:h-96 rounded-full bg-cream-100 flex items-center justify-center shadow-gold-glow overflow-hidden relative">
+              <div className="w-80 h-80 xl:w-96 xl:h-96 rounded-full bg-cream-100 flex items-center justify-center shadow-gold-glow overflow-hidden relative group">
                 <img src="/images/products/readytoeat-collagen-1.png" alt="Sản phẩm Yến Sào Bình An" className="w-full h-full object-cover animate-float" />
+                
+                {/* Brand Label Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none animate-float" style={{ animationDelay: "0.2s" }}>
+                  <div className="bg-white/85 backdrop-blur-md px-6 py-4 rounded-xl shadow-gold-glow transform -rotate-3 translate-y-12 border border-cream-200 flex flex-col items-center">
+                    <span className="text-primary-600 font-serif font-bold text-xl tracking-widest uppercase">Yến Sào</span>
+                    <span className="text-brown-900 font-serif font-black text-2xl tracking-[0.2em] uppercase mt-1">Bình An</span>
+                    <div className="w-12 h-0.5 bg-gradient-gold mt-2"></div>
+                  </div>
+                </div>
               </div>
               {/* Floating badges */}
               <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-warm-lg p-3 animate-float" style={{ animationDelay: "0.5s" }}>
