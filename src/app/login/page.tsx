@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,8 +31,11 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Email hoặc mật khẩu không đúng");
       } else {
-        router.push("/");
-        router.refresh();
+        setSuccess("Đăng nhập thành công! Đang chuyển hướng...");
+        setTimeout(() => {
+          router.push("/");
+          router.refresh();
+        }, 1500);
       }
     } catch {
       setError("Đã xảy ra lỗi. Vui lòng thử lại.");
@@ -41,7 +45,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 relative">
+      {/* Toast Popup (Rất nhẹ, không tốn thêm thư viện) */}
+      {success && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-success-500 text-white px-6 py-3 rounded-full shadow-warm-lg flex items-center gap-2 animate-bounce z-50">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          <span className="font-medium text-sm">{success}</span>
+        </div>
+      )}
+
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -99,18 +111,11 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !!success}
             className="btn-primary w-full py-3.5"
           >
-            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+            {loading ? "Đang xử lý..." : success ? "Thành công!" : "Đăng nhập"}
           </button>
-
-          {/* Demo credentials */}
-          <div className="p-3 bg-primary-50 rounded-xl text-sm text-brown-600">
-            <p className="font-medium text-primary-700 mb-1">Tài khoản demo:</p>
-            <p>Admin: admin@yensao.vn / admin123</p>
-            <p>User: user@test.com / user123</p>
-          </div>
         </form>
 
         <p className="text-center text-sm text-brown-500 mt-6">
