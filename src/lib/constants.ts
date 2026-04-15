@@ -54,9 +54,9 @@ export const FOOTER_LINKS = {
   ],
   support: [
     { href: "/blog", label: "Hướng dẫn sử dụng" },
-    { href: "/recommendation", label: "Tư vấn sức khỏe" },
-    { href: "#", label: "Chính sách đổi trả" },
-    { href: "#", label: "Câu hỏi thường gặp" },
+    { href: "/recommendation", label: "Tư vấn sức khỏe AI" },
+    { href: "/policies/return", label: "Chính sách đổi trả" },
+    { href: "/faq", label: "Câu hỏi thường gặp" },
   ],
   company: [
     { href: "/about", label: "Về chúng tôi" },

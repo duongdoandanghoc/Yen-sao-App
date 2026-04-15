@@ -1,214 +1,142 @@
 "use client";
 
-import { useState } from "react";
-import { mockProducts } from "@/lib/mockData";
-import ProductCard from "@/components/product/ProductCard";
-import { PURPOSES } from "@/lib/constants";
-import { ProductType } from "@/types";
-import { Sparkles, ArrowRight, RotateCcw } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Link } from "next-view-transitions";
+import { Send, Bot, ArrowLeft, Loader2, Sparkles } from "lucide-react";
+
+interface Message {
+  role: "user" | "bot";
+  content: string;
+}
 
 export default function RecommendationPage() {
-  const [ageRange, setAgeRange] = useState("");
-  const [purposes, setPurposes] = useState<string[]>([]);
-  const [budget, setBudget] = useState("");
-  const [results, setResults] = useState<ProductType[]>([]);
-  const [showResults, setShowResults] = useState(false);
-  const [reasoning, setReasoning] = useState("");
+  const [messages, setMessages] = useState<Message[]>([
+    { 
+      role: "bot", 
+      content: "Xin chào! 👋 Tôi là trợ lý AI chuyên gia yến sào của Bình An.\n\nChia sẻ với tôi nhu cầu của bạn (ví dụ: 'Tôi muốn mua yến tẩm bổ cho người lớn tuổi', hoặc 'Bà bầu tháng thứ 4 ăn yến được chưa?'). Tôi sẽ đưa ra giải pháp hoàn hảo nhất!" 
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const togglePurpose = (p: string) => {
-    setPurposes((prev) => prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const getRecommendations = () => {
-    const allProducts = mockProducts.map((p, i) => ({
-      ...p,
-      id: `product-${i}`,
-      createdAt: new Date().toISOString(),
-    })) as ProductType[];
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
 
-    let filtered = [...allProducts];
-    let reason = "Dựa trên nhu cầu của bạn, ";
+  const sendMessage = async () => {
+    if (!input.trim() || isLoading) return;
 
-    // Filter by purpose
-    if (purposes.includes("pregnancy")) {
-      filtered = filtered.filter((p) => p.tags.includes("safe") || p.tags.includes("baby") || p.benefits.some((b) => b.toLowerCase().includes("bầu")));
-      reason += "chúng tôi gợi ý sản phẩm an toàn cho bà bầu, ";
+    const userMsg: Message = { role: "user", content: input.trim() };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: newMessages.map(m => ({ 
+            role: m.role === "bot" ? "assistant" : "user", 
+            content: m.content 
+          }))
+        }),
+      });
+
+      const data = await response.json();
+      setMessages(prev => [...prev, { role: "bot", content: data.content }]);
+    } catch (error) {
+      setMessages(prev => [...prev, { role: "bot", content: "Xin lỗi, máy chủ AI đang gặp sự cố kết nối." }]);
+    } finally {
+      setIsLoading(false);
     }
-    if (purposes.includes("beauty")) {
-      filtered = filtered.filter((p) => p.tags.includes("beauty") || p.tags.includes("collagen") || p.tags.includes("women") || p.benefits.some((b) => b.toLowerCase().includes("da")));
-      reason += "sản phẩm hỗ trợ làm đẹp da, ";
-    }
-    if (purposes.includes("gift")) {
-      filtered = filtered.filter((p) => p.tags.includes("gift") || p.tags.includes("premium"));
-      reason += "sản phẩm phù hợp làm quà tặng, ";
-    }
-    if (purposes.includes("health") || purposes.includes("elderly") || purposes.includes("recovery")) {
-      filtered = filtered.filter((p) => p.tags.includes("health") || p.tags.includes("premium") || p.benefits.some((b) => b.toLowerCase().includes("miễn dịch") || b.toLowerCase().includes("phục hồi")));
-      reason += "sản phẩm tăng cường sức khỏe, ";
-    }
-
-    // Filter by budget
-    if (budget === "low") {
-      filtered = filtered.filter((p) => p.price <= 1000000);
-      reason += "trong tầm giá dưới 1 triệu đồng.";
-    } else if (budget === "mid") {
-      filtered = filtered.filter((p) => p.price >= 500000 && p.price <= 3500000);
-      reason += "trong tầm giá 500k - 3.5 triệu đồng.";
-    } else if (budget === "high") {
-      filtered = filtered.filter((p) => p.price >= 2000000);
-      reason += "sản phẩm cao cấp, chất lượng tốt nhất.";
-    } else {
-      reason += "phù hợp với mọi ngân sách.";
-    }
-
-    // Fallback - if no results, show featured
-    if (filtered.length === 0) {
-      filtered = allProducts.filter((p) => p.featured);
-      reason = "Chúng tôi gợi ý những sản phẩm nổi bật và được yêu thích nhất.";
-    }
-
-    // Sort by rating
-    filtered.sort((a, b) => b.averageRating - a.averageRating);
-
-    setResults(filtered.slice(0, 4));
-    setReasoning(reason);
-    setShowResults(true);
-  };
-
-  const reset = () => {
-    setAgeRange("");
-    setPurposes([]);
-    setBudget("");
-    setResults([]);
-    setShowResults(false);
-    setReasoning("");
   };
 
   return (
-    <div className="container-custom py-8 md:py-12 max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="text-center mb-10">
-        <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Sparkles size={28} className="text-primary-600" />
+    <div className="bg-cream-50 min-h-screen flex flex-col">
+      <div className="container-custom max-w-5xl mx-auto py-8 flex-1 flex flex-col h-full">
+        <Link href="/" className="inline-flex items-center gap-2 text-brown-500 hover:text-primary-600 transition-colors mb-6">
+          <ArrowLeft size={16} />
+          Trở về Trang chủ
+        </Link>
+        
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Sparkles size={28} className="text-primary-600" />
+          </div>
+          <h1 className="text-3xl font-serif font-bold text-brown-900">Phòng Khách AI Của Bình An</h1>
+          <p className="text-brown-600 mt-2">Hỏi bất cứ thứ gì, chuyên gia của chúng tôi được đào tạo để trả lời bằng cái tâm hướng thiện.</p>
         </div>
-        <h1 className="section-title">Tư Vấn Yến Sào</h1>
-        <p className="section-subtitle">
-          Trả lời một vài câu hỏi để chúng tôi gợi ý sản phẩm phù hợp nhất cho bạn
-        </p>
-        <div className="gold-divider mt-4" />
-      </div>
 
-      {!showResults ? (
-        <div className="card p-6 md:p-8 max-w-2xl mx-auto animate-fade-in">
-          {/* Age Range */}
-          <div className="mb-8">
-            <h3 className="font-serif font-semibold text-brown-900 mb-3">Độ tuổi của bạn?</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                { value: "18-30", label: "18 - 30" },
-                { value: "30-45", label: "30 - 45" },
-                { value: "45-60", label: "45 - 60" },
-                { value: "60+", label: "Trên 60" },
-              ].map((age) => (
-                <button
-                  key={age.value}
-                  onClick={() => setAgeRange(age.value)}
-                  className={`p-3 rounded-xl text-sm font-medium transition-all ${
-                    ageRange === age.value
-                      ? "bg-gold-gradient text-white shadow-gold-glow"
-                      : "bg-cream-100 text-brown-600 hover:bg-cream-200"
-                  }`}
-                >
-                  {age.label}
-                </button>
-              ))}
+        {/* Chat Terminal */}
+        <div className="flex-1 bg-white rounded-3xl shadow-warm-lg border border-cream-200 overflow-hidden flex flex-col h-[600px] mb-10">
+          <div className="bg-gold-gradient p-5 flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center border border-white/30">
+              <Bot size={24} className="text-white" />
+            </div>
+            <div>
+              <h2 className="font-bold text-white text-lg font-serif">Chuyên Gia Yến Sào AI</h2>
+              <p className="text-white/80 text-sm">Luôn sẵn sàng lắng nghe bạn</p>
             </div>
           </div>
 
-          {/* Purpose */}
-          <div className="mb-8">
-            <h3 className="font-serif font-semibold text-brown-900 mb-3">Mục đích sử dụng? <span className="text-sm font-normal text-brown-400">(chọn nhiều)</span></h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {PURPOSES.map((p) => (
-                <button
-                  key={p.value}
-                  onClick={() => togglePurpose(p.value)}
-                  className={`p-3 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
-                    purposes.includes(p.value)
-                      ? "bg-gold-gradient text-white shadow-gold-glow"
-                      : "bg-cream-100 text-brown-600 hover:bg-cream-200"
+          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 custom-scrollbar bg-cream-50/50">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div 
+                  className={`max-w-[90%] md:max-w-[70%] p-4 md:p-5 rounded-2xl text-[15px] whitespace-pre-line leading-relaxed shadow-sm ${
+                    msg.role === "user"
+                      ? "bg-brown-900 text-cream-100 rounded-br-sm"
+                      : "bg-white border border-cream-200 text-brown-800 rounded-bl-sm"
                   }`}
-                >
-                  <span>{p.icon}</span>
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Budget */}
-          <div className="mb-8">
-            <h3 className="font-serif font-semibold text-brown-900 mb-3">Ngân sách?</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {[
-                { value: "low", label: "Dưới 1 triệu", sub: "Tiết kiệm" },
-                { value: "mid", label: "1 - 3.5 triệu", sub: "Phổ biến" },
-                { value: "high", label: "Trên 3.5 triệu", sub: "Cao cấp" },
-              ].map((b) => (
-                <button
-                  key={b.value}
-                  onClick={() => setBudget(b.value)}
-                  className={`p-3 rounded-xl text-sm font-medium transition-all ${
-                    budget === b.value
-                      ? "bg-gold-gradient text-white shadow-gold-glow"
-                      : "bg-cream-100 text-brown-600 hover:bg-cream-200"
-                  }`}
-                >
-                  <span className="block">{b.label}</span>
-                  <span className={`text-xs ${budget === b.value ? "text-white/80" : "text-brown-400"}`}>{b.sub}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <button
-            onClick={getRecommendations}
-            disabled={purposes.length === 0}
-            className="btn-primary w-full py-3.5 gap-2"
-          >
-            <Sparkles size={18} />
-            Nhận gợi ý sản phẩm
-          </button>
-        </div>
-      ) : (
-        <div className="animate-fade-in">
-          {/* Reasoning */}
-          <div className="card p-5 mb-8 border-l-4 border-primary-500">
-            <div className="flex items-start gap-3">
-              <Sparkles size={20} className="text-primary-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-medium text-brown-900 mb-1">Gợi ý từ AI</h3>
-                <p className="text-sm text-brown-600">{reasoning}</p>
+                  dangerouslySetInnerHTML={{ 
+                    __html: msg.content
+                      .replace(/### (.*?)\n/g, '<strong class="block mt-3 mb-1 font-bold text-brown-900 text-lg">$1</strong>\n')
+                      .replace(/## (.*?)\n/g, '<strong class="block mt-3 mb-1 font-bold text-primary-700 text-lg">$1</strong>\n')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-brown-900">$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em class="italic text-brown-600">$1</em>')
+                      .replace(/- (.*?)\n/g, '<li class="ml-4 list-disc marker:text-primary-500">$1</li>')
+                  }}
+                />
               </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                 <div className="bg-white border border-cream-200 p-4 rounded-2xl rounded-bl-sm shadow-sm flex items-center gap-3">
+                   <Loader2 size={18} className="animate-spin text-primary-600" />
+                   <span className="text-sm font-medium text-brown-600 animate-pulse">Chuyên gia đang suy nghĩ các phương án sức khỏe tốt nhất...</span>
+                 </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="p-4 md:p-6 bg-white border-t border-cream-200">
+            <div className="flex gap-3 max-w-4xl mx-auto">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Ví dụ: Dạ dày yếu có dùng yến được không?"
+                className="flex-1 bg-cream-50 border border-cream-200 rounded-2xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-brown-800 placeholder:text-brown-400"
+              />
+              <button 
+                onClick={sendMessage} 
+                disabled={isLoading || !input.trim()}
+                className="px-6 bg-gold-gradient rounded-2xl text-white hover:shadow-gold-glow transition-all flex items-center justify-center disabled:opacity-50 disabled:hover:shadow-none"
+              >
+                <Send size={20} className={input.trim() && !isLoading ? "animate-bounce" : ""} />
+              </button>
             </div>
           </div>
-
-          {/* Results Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {results.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-
-          {/* Reset */}
-          <div className="text-center">
-            <button onClick={reset} className="btn-secondary gap-2">
-              <RotateCcw size={16} />
-              Tư vấn lại
-            </button>
-          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
