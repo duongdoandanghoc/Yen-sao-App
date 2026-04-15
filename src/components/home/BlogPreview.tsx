@@ -34,11 +34,15 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
               href={`/blog/${post.slug}`}
               className="card group overflow-hidden"
             >
-              {/* Cover Image Placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-primary-100 to-cream-200 flex items-center justify-center">
-                <span className="text-5xl group-hover:scale-110 transition-transform duration-500">
-                  {categoryEmojis[post.tags[0]] || "📝"}
-                </span>
+              {/* Cover Image */}
+              <div className="aspect-video bg-cream-100 flex items-center justify-center overflow-hidden">
+                {post.coverImage ? (
+                  <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                ) : (
+                  <span className="text-5xl group-hover:scale-110 transition-transform duration-500">
+                    {categoryEmojis[post.tags[0]] || "📝"}
+                  </span>
+                )}
               </div>
 
               <div className="p-5">

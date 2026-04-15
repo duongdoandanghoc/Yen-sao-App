@@ -32,6 +32,11 @@ async function main() {
         originalPrice: p.originalPrice,
         stock: p.stock,
         images: p.images || [],
+        description: p.description,
+        shortDescription: p.shortDescription || p.description.substring(0, 100),
+        benefits: p.benefits || [],
+        usage: p.usage || "",
+        tags: p.tags || [],
       },
       create: {
         name: p.name,
@@ -61,7 +66,13 @@ async function main() {
   for (const b of mockBlogPosts) {
     await prisma.blogPost.upsert({
       where: { slug: b.slug },
-      update: {},
+      update: {
+        title: b.title,
+        content: b.content,
+        excerpt: b.excerpt,
+        coverImage: b.coverImage || "",
+        tags: b.tags || [],
+      },
       create: {
         title: b.title,
         slug: b.slug,

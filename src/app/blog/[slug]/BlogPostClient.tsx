@@ -38,8 +38,12 @@ export default function BlogPostClient({ params }: { params: Promise<{ slug: str
       </Link>
 
       {/* Cover */}
-      <div className="aspect-video bg-gradient-to-br from-primary-100 to-cream-200 rounded-2xl flex items-center justify-center mb-8">
-        <span className="text-7xl">📝</span>
+      <div className="aspect-video bg-cream-100 rounded-2xl flex items-center justify-center mb-8 overflow-hidden">
+        {post.coverImage ? (
+          <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
+        ) : (
+          <span className="text-7xl">📝</span>
+        )}
       </div>
 
       {/* Tags */}
