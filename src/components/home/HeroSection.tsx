@@ -18,15 +18,15 @@ export default function HeroSection() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brown-900 leading-tight">
-              Tinh Hoa{" "}
-              <span className="text-gradient-gold">Yến Sào</span>
+              <span className="text-gradient-gold">Yến Sào Bình An</span>
               <br />
-              Sức Khỏe Bền Lâu
+              Đậm Vị Mộc Miên
+              <br />
+              Vẹn Nguyên Tâm Ý
             </h1>
 
             <p className="mt-6 text-lg text-brown-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Yến sào nguyên chất từ đảo Khánh Hòa, được chọn lọc kỹ lưỡng và kiểm định chất lượng. 
-              Món quà thiên nhiên cho sức khỏe gia đình bạn.
+              Tuyệt phẩm Yến sào nguyên chất thu hoạch từ vách đá thiên nhiên. Kết tinh tinh hoa của đại dương mênh mông, mang đến sự Bình An và Sức Khỏe thịnh vượng cho gia đình bạn.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center lg:justify-start">
@@ -59,8 +59,8 @@ export default function HeroSection() {
           {/* Hero Image Placeholder */}
           <div className="hidden lg:flex justify-center animate-slide-up">
             <div className="relative">
-              <div className="w-80 h-80 xl:w-96 xl:h-96 rounded-full bg-gradient-to-br from-primary-100 via-primary-200 to-cream-200 flex items-center justify-center shadow-gold-glow">
-                <span className="text-[120px] animate-float">🏮</span>
+              <div className="w-80 h-80 xl:w-96 xl:h-96 rounded-full bg-cream-100 flex items-center justify-center shadow-gold-glow overflow-hidden relative">
+                <img src="/images/products/readytoeat-collagen-1.png" alt="Sản phẩm Yến Sào Bình An" className="w-full h-full object-cover animate-float" />
               </div>
               {/* Floating badges */}
               <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-warm-lg p-3 animate-float" style={{ animationDelay: "0.5s" }}>

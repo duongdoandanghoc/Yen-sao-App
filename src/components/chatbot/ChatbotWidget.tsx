@@ -8,40 +8,72 @@ interface Message {
   content: string;
 }
 
-const botResponses: Record<string, string> = {
-  "xin chào": "Xin chào! 👋 Tôi là trợ lý tư vấn yến sào. Tôi có thể giúp bạn chọn sản phẩm phù hợp, hướng dẫn cách dùng, hoặc giải đáp thắc mắc. Bạn cần tư vấn gì ạ?",
-  "yến": "Chúng tôi có 3 loại yến sào:\n🪹 **Yến thô** - Nguyên tổ tự nhiên\n✨ **Yến tinh chế** - Đã làm sạch, sẵn chưng\n🍯 **Yến chưng sẵn** - Tiện lợi dùng ngay\n\nBạn quan tâm loại nào ạ?",
-  "giá": "Giá yến sào của chúng tôi:\n• Vụn yến: từ 900k/100g\n• Yến lông: từ 1.8tr/100g\n• Yến đảo: từ 2.8tr/100g\n• Yến hang: từ 4.5tr/100g\n• Yến chưng sẵn: 150k-250k/hũ\n\nBạn muốn xem chi tiết sản phẩm nào?",
-  "bà bầu": "Yến sào rất tốt cho bà bầu! 🤰\n\n✅ Bổ sung dưỡng chất cho mẹ và bé\n✅ Hỗ trợ phát triển não bộ thai nhi\n✅ Giúp da mẹ đẹp hơn\n\nNên dùng từ tháng thứ 3, mỗi ngày 3-5g. Gợi ý: **Yến Nhỏ Cho Bé** hoặc **Yến Tinh Chế Trắng**.",
-  "cách dùng": "Cách dùng yến sào hiệu quả:\n\n1️⃣ Ngâm 2-4h trong nước sạch\n2️⃣ Nhặt lông tơ cẩn thận\n3️⃣ Chưng cách thủy 25-30 phút\n4️⃣ Thêm đường phèn sau khi chưng\n\n⏰ Nên dùng buổi sáng khi bụng đói\n📅 Dùng 3-4 lần/tuần để đạt hiệu quả tốt nhất",
-  "giao hàng": "🚚 Chính sách giao hàng:\n• Miễn phí giao hàng cho đơn từ 500k\n• Giao toàn quốc trong 2-5 ngày\n• Thanh toán khi nhận hàng (COD)\n• Đóng gói cẩn thận, bảo quản an toàn",
-  "khuyến mãi": "🎉 Mã giảm giá hiện có:\n• **YENSAO10** - Giảm 10% (đơn từ 500k)\n• **FREESHIP** - Miễn phí ship (đơn từ 300k)\n• **WELCOME20** - Giảm 20% (đơn từ 1tr)\n\nNhập mã tại bước thanh toán!",
+const botResponses: Record<string, { text: string; isHealthAttr: boolean }> = {
+  "xin chào": { text: "Xin chào! 👋 Tôi là trợ lý AI ảo của Yến Sào Bình An (được vận hành dựa trên kiến thức chuyên môn về Yến Sào). Tôi có thể giúp bạn chọn sản phẩm phù hợp, hướng dẫn cách chưng, hoặc giải đáp thắc mắc sức khỏe. Bạn cần tư vấn gì ạ?", isHealthAttr: false },
+  "yến": { text: "Thương hiệu Bình An có 3 dòng sản phẩm cực phẩm:\n🪹 **Yến thô** - Nguyên tổ tự nhiên thu hoạch từ đảo/hang đá\n✨ **Yến tinh chế** - Đã làm sạch lông 100%, sẵn sàng chế biến\n🍯 **Yến chưng sẵn** - Hũ tiện lợi dùng ngay với Hồng Sâm, Nhĩ Cốt, Nước Dừa\n\nBạn quan tâm dòng nào ạ?", isHealthAttr: false },
+  "giá": { text: "Bảng giá tham khảo của Yến Sào Bình An:\n• Vụn yến khô tự nhiên: 900.000đ/100g\n• Yến sào nguyên tổ loại mộc: 1.800.000đ/100g\n• Yến sào Tinh Chế cao cấp: 3.500.000đ/100g\n• Yến Huyết / Yến Vàng siêu hiếm: 5.200.000đ/50g\n• Yến chưng sẵn chuyên sâu: 150.000đ-250.000đ/hũ\n\nBạn muốn tìm mua để dùng hay đi biếu tặng?", isHealthAttr: false },
+  "bà bầu": { text: "Yến sào thực sự là nguồn 'vàng trắng' đối với mẹ bầu! 🤰\n- **Đầu thai kỳ:** Nên dùng cực ít và bắt buộc thêm gừng ấm để kiềm tính hàn làm lạnh dạ dày, giảm ốm nghén.\n- **Tháng 4 trở đi:** Dùng tuyệt vời! Hàm lượng Axit Sialic khổng lồ giúp phát triển thần kinh thai nhi, trong khi Canxi và Collagen chống rạn da và loãng xương cho mẹ.\n- **Khuyên dùng:** Các dòng Yến Tinh Chế hạt mộc hoặc Yến vụn để dễ hấp thu.", isHealthAttr: true },
+  "trẻ em": { text: "Cực kỳ tốt cho bé biếng ăn và miễn dịch kém! 👼\nTuy nhiên dạ dày bé còn non, mẹ chỉ nên nấu khoảng 1-2 gam/lần và ăn xen kẽ 2 ngày/lần. Yến giúp trị ho hắng dứt điểm và phát triển trí não vượt trội. Trẻ dưới 1 tuổi tuyệt đối chưa nên dùng.", isHealthAttr: true },
+  "tim mạch": { text: "Yến sào hoàn toàn KHÔNG chứa mỡ động vật hay cholesterol tồi. Ngược lại, lượng kẽm và axit amin thiết yếu trong tổ yến giúp ổn định nhịp tim, chống cục máu đông và phục hồi thành mạch máu cực tốt. Người mắc bệnh tim mạch hoàn toàn nên dùng đều đặn như một liệu pháp bồi bổ thanh tịnh.", isHealthAttr: true },
+  "tiểu đường": { text: "Bệnh nhân tiểu đường HOÀN TOÀN ĂN ĐƯỢC tổ yến vì bản chất yến không có đường. Tuy nhiên, khi chế biến quý khách phải chưng với đường thảo dược ăn kiêng, hạt sen, hoặc chưng lạt (không đường). Tuyệt đối tránh xa các loại Yến hũ chưng sẵn dùng đường phèn tự nhiên.", isHealthAttr: true },
+  "người già": { text: "Đối với người lớn tuổi, yến sào là báu vật giúp phục hồi sinh khí, chống lại chứng suy nhược mãn tính, thoái hóa khớp và chứng chán ăn. Thành phần Leucine và Isoleucine hỗ trợ phục hồi sức khỏe thể chất siêu tốc.", isHealthAttr: true },
+  "ho khan": { text: "Từ góc độ Đông Y học cổ truyền, Yến Sào có tính bình, vị ngọt thanh, đi trực tiếp vào Phế (phổi). Đặc trị các chứng ho lao, ho khan dai dẳng, viêm phế quản vô cùng hữu hiệu. Hãy chưng yến nấm tuyết dội thêm 2 lát gừng già nóng uống vào buổi tối.", isHealthAttr: true },
+  "cách dùng": { text: "Nghệ Thuật Chưng Yến Hoàn Hảo:\n1️⃣ Ngâm yến trong nước kiềm (nhiệt độ phòng) khoảng 40 phút.\n2️⃣ Cho yến vào thố, đổ ngập nước.\n3️⃣ Cách Thủy ở 80-85°C. Đừng nung sôi sục làm đứt rụng mạch Acid Amin.\n4️⃣ Tắt bếp sau 30 phút mới thả đường phèn Quảng Ngãi và gừng vào để không làm chai sợi yến.", isHealthAttr: false },
 };
 
 function getBotResponse(message: string): string {
   const lower = message.toLowerCase();
   
-  for (const [key, response] of Object.entries(botResponses)) {
-    if (lower.includes(key)) return response;
+  // Logic quét mã siêu từ khóa (Smart Catch)
+  let foundResponse = "";
+  let isHealth = false;
+
+  if (lower.match(/không|giá|bao nhiêu/)) {
+    if (lower.includes("giá")) {
+	  foundResponse = botResponses["giá"].text;
+	}
   }
   
-  if (lower.includes("hi") || lower.includes("hello") || lower.includes("chào")) {
-    return botResponses["xin chào"];
-  }
-  if (lower.includes("mua") || lower.includes("đặt")) {
-    return "Bạn có thể đặt hàng trực tiếp trên website! Thêm sản phẩm vào giỏ hàng → Nhập thông tin giao hàng → Xác nhận đơn hàng. Rất đơn giản! 🛒\n\nBạn cần tư vấn sản phẩm nào không?";
-  }
-  if (lower.includes("chất lượng") || lower.includes("thật")) {
-    return "🛡️ Cam kết chất lượng:\n• 100% yến tự nhiên từ Khánh Hòa\n• Kiểm định an toàn vệ sinh thực phẩm\n• Đổi trả trong 7 ngày nếu không hài lòng\n• Bảo quản đúng cách, đóng gói kín";
+  if (!foundResponse) {
+    for (const [key, response] of Object.entries(botResponses)) {
+      if (lower.includes(key)) {
+        foundResponse = response.text;
+        isHealth = response.isHealthAttr;
+        break;
+      }
+    }
   }
 
-  return "Cảm ơn bạn đã liên hệ! 😊 Tôi có thể giúp bạn về:\n• Tư vấn chọn sản phẩm\n• Hướng dẫn cách dùng\n• Thông tin giá cả\n• Chính sách giao hàng\n• Mã khuyến mãi\n\nHãy hỏi tôi bất cứ điều gì!";
+  // Bắt các tình huống chuyên sâu bệnh lý (Health Trigger)
+  if (lower.match(/ốm|bệnh|viêm|ho |phổi|ung thư|huyết áp|mổ|yếu/)) {
+    if (!foundResponse) {
+      foundResponse = "Yến sào có dược tính phục hồi tái tạo tế bào (EGF) rất sắc bén, cực kì được khuyên dùng cho người vừa ốm dậy, người cần mau lành vết mổ hay hệ miễn dịch sụt lún. Bạn có thể sử dụng yến làm sạch hoặc loại chưng sẵn nhân sâm thượng hạng để tiếp ứng máu huyết.";
+      isHealth = true;
+    }
+  }
+
+  if (!foundResponse) {
+    if (lower.includes("hi") || lower.includes("hello") || lower.includes("chào")) {
+      foundResponse = botResponses["xin chào"].text;
+    } else if (lower.includes("mua") || lower.includes("đặt")) {
+      foundResponse = "Việc chốt đơn cực kỳ tiện! Hãy dạo quanh mục Sản Phẩm trên web, bấm 'Thêm vào giỏ' và hoàn tất quy trình điền địa chỉ. Đội ngũ Bình An sẽ giao hỏa tốc đến tận tay bạn! 🛒";
+    } else {
+      foundResponse = "🤖 Cảm ơn bạn. Câu hỏi của bạn rất thú vị! Để hỗ trợ chính xác hơn, bạn có thể hỏi các từ khóa như: 'người già', 'bà bầu', 'tiểu đường', 'cách dùng', hoặc 'giá tiền' nhé. Tôi được nạp dữ liệu chuẩn xác để trả lời các vấn đề này.";
+    }
+  }
+
+  // Nối Disclaimer nếu là câu hỏi y tế
+  if (isHealth) {
+    foundResponse += "\n\n*(Lưu ý: Thông tin tư vấn sức khỏe từ hệ thống AI chỉ mang tính chất gợi ý và tham khảo. Tổ Yến không phải là thuốc, không thay thế hoàn toàn được các chỉ định y khoa từ bác sĩ điều trị).*";
+  }
+
+  return foundResponse;
 }
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", content: "Xin chào! 👋 Tôi là trợ lý tư vấn Yến Sào Việt. Tôi có thể giúp gì cho bạn?" },
+    { role: "bot", content: "Xin chào! 👋 Tôi là trợ lý AI ảo của Yến Sào Bình An. Tôi có thể giúp gì cho bạn?" },
   ]);
   const [input, setInput] = useState("");
 
