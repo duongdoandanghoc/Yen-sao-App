@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { mockBlogPosts } from "@/lib/mockData";
 import { ArrowRight } from "lucide-react";
 

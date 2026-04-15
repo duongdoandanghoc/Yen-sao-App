@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { APP_NAME, FOOTER_LINKS, CONTACT_INFO } from "@/lib/constants";
 import { Phone, Mail, MapPin } from "lucide-react";
+import InstallPWA from "@/components/pwa/InstallPWA";
 
 export default function Footer() {
   return (
@@ -23,7 +24,8 @@ export default function Footer() {
               Chuyên cung cấp yến sào nguyên chất từ Khánh Hòa. 
               Cam kết 100% tự nhiên, chất lượng hàng đầu Việt Nam.
             </p>
-            <div className="flex flex-col gap-2 text-sm text-cream-400">
+            <InstallPWA />
+            <div className="flex flex-col gap-2 text-sm text-cream-400 mt-6">
               <a href={CONTACT_INFO.phoneHref} className="flex items-center gap-2 hover:text-primary-400 transition-colors">
                 <Phone size={14} />
                 {CONTACT_INFO.phone}

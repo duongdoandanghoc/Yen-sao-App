@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import ProductCard from "@/components/product/ProductCard";
 import { ProductType } from "@/types";
 import { ArrowRight } from "lucide-react";

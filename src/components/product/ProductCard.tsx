@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ProductType } from "@/types";
 import { useCart } from "@/contexts/CartContext";
 import { formatCurrency, getCategoryLabel } from "@/lib/utils";

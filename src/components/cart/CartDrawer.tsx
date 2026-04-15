@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useCart } from "@/contexts/CartContext";
 import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";

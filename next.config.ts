@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
+import withPWAInit from "@ducanh2912/next-pwa";
 
 const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
+
+const withPWA = withPWAInit({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development", // Tắt PWA khi dev để không vướng bộ nhớ đệm
+  register: true,
+  skipWaiting: true,
+});
 
 const nextConfig: NextConfig = {
   // Khi build cho mobile app, xuất ra static HTML (không cần server)
@@ -19,5 +27,5 @@ const nextConfig: NextConfig = {
   trailingSlash: isMobile,
 };
 
-export default nextConfig;
+export default withPWA(nextConfig);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Package, ShoppingCart, Users, ChevronLeft, BarChart3 } from "lucide-react";
 

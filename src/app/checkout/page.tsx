@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/utils";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "@/lib/constants";
 import { Check, MapPin, CreditCard, ShoppingBag, ArrowLeft, Tag, X } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();

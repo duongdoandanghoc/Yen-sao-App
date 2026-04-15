@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
 

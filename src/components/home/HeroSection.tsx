@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ArrowRight, Shield, Truck, Award } from "lucide-react";
 
 export default function HeroSection() {

@@ -2,7 +2,7 @@
 
 import { use } from "react";
 import { mockBlogPosts } from "@/lib/mockData";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ArrowLeft } from "lucide-react";
 
 export default function BlogPostClient({ params }: { params: Promise<{ slug: string }> }) {

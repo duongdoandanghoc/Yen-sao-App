@@ -4,7 +4,7 @@ import { useState } from "react";
 import { mockProducts } from "@/lib/mockData";
 import { formatCurrency, getCategoryLabel } from "@/lib/utils";
 import { Plus, Edit2, Trash2, Search } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default function AdminProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");

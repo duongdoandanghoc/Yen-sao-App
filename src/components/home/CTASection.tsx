@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ArrowRight, Phone } from "lucide-react";
 import { CONTACT_INFO } from "@/lib/constants";
 

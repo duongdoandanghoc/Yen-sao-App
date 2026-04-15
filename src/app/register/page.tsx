@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
 

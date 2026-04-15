@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { User, Package, MapPin, LogOut, Heart, Bell } from "lucide-react";
 import { signOut } from "next-auth/react";
 

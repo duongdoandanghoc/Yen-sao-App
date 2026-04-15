@@ -1,6 +1,6 @@
 import { APP_NAME, CONTACT_INFO } from "@/lib/constants";
 import { Heart, Shield, Leaf, Award, Users, Clock, MapPin, Star } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

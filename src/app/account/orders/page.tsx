@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getStatusLabel, getStatusColor, formatCurrency, formatDate } from "@/lib/utils";
 import { Package, ChevronRight, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useSession } from "next-auth/react";
 
 export default function OrdersPage() {

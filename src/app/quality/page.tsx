@@ -11,7 +11,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

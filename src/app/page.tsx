@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { prisma } from "@/lib/prisma";
 import HeroSection from "@/components/home/HeroSection";
+import SmartPicks from "@/components/home/SmartPicks";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import BenefitsSection from "@/components/home/BenefitsSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
@@ -23,6 +24,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
+      <SmartPicks />
       <FeaturedProducts products={featuredProducts} />
       <BenefitsSection />
       <TestimonialsSection />

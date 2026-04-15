@@ -1,16 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { formatCurrency, getCategoryLabel } from "@/lib/utils";
 import { ProductType } from "@/types";
 import { ShoppingBag, Star, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
+import { useTracking } from "@/hooks/useTracking";
 
 export default function ProductDetailClient({ product }: { product: ProductType }) {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "usage" | "reviews">("description");
   const { addItem } = useCart();
+  const { trackCategory } = useTracking();
+
+  useEffect(() => {
+    if (product?.category) {
+      trackCategory(product.category);
+    }
+  }, [product]);
 
   const reviews = [
     { rating: 5, comment: "Yến rất ngon, sợi dày dai. Gia đình mình rất hài lòng!", userName: "Nguyễn Thanh Hoa" },

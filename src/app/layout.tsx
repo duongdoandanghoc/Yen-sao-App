@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import { Providers } from "@/components/Providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   },
   description: APP_DESCRIPTION,
   keywords: ["yến sào", "bird nest", "yến sào Khánh Hòa", "yến cao cấp", "sức khỏe"],
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -22,16 +24,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi">
-      <body className="min-h-screen flex flex-col">
-        <Providers>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <CartDrawer />
-          <ChatbotWidget />
-        </Providers>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="vi">
+        <body className="min-h-screen flex flex-col">
+          <Providers>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <CartDrawer />
+            <ChatbotWidget />
+          </Providers>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }
