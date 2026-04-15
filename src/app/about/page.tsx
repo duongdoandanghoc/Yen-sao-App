@@ -10,31 +10,31 @@ export const metadata: Metadata = {
 
 const milestones = [
   {
-    year: "Khởi nguồn",
-    title: "Từ tình yêu gia đình",
+    year: "Khởi nguồn (Hơn 10 năm trước)",
+    title: "Từ mâm yến nhỏ của gia đình",
     description:
-      "Mọi thứ bắt đầu từ một người mẹ muốn tìm nguồn yến sào thật sự tinh khiết cho sức khỏe gia đình. Khi không tìm được sản phẩm nào đủ tin tưởng trên thị trường, chúng tôi quyết định tự tay lựa chọn từng tổ yến.",
+      "Bình An không bắt đầu bằng một bản kế hoạch kinh doanh hoành tráng. Mọi thứ bắt nguồn từ hơn 10 năm trước, khi gia đình chúng tôi tự tay nhặt những tổ yến thuần khiết nhất từ vách đá để bồi bổ cho người thân ốm đau. Sự thủ công, tỉ mỉ và cái tâm của người nhà làm cho nhau chính là viên gạch đầu tiên.",
     icon: Heart,
   },
   {
     year: "Hành trình",
-    title: "Tìm về nguồn yến tự nhiên",
+    title: "Chinh phục những vị khách khắt khe nhất",
     description:
-      "Chúng tôi đã đi khắp vùng biển Khánh Hòa, Phú Yên, Bình Thuận — những vùng đảo yến nổi tiếng nhất Việt Nam — để tìm hiểu, chọn lọc và xây dựng mối quan hệ trực tiếp với những người khai thác yến lâu năm, đảm bảo nguồn gốc rõ ràng.",
+      "Suốt một thập kỷ, Bình An hiếm khi xuất hiện trên các quảng cáo rầm rộ hay sở hữu những tờ giấy chứng nhận hào nhoáng. Thế nhưng, sản phẩm của chúng tôi luôn cháy hàng nhờ sự truyền miệng của các vị sếp lớn ở tỉnh, những gia đình sành ăn, và những người con tìm thuốc quý phục hồi sức khỏe cho cha mẹ.",
     icon: MapPin,
   },
   {
     year: "Cam kết",
-    title: "100% tự nhiên, không thỏa hiệp",
+    title: "100% thủ công nguyên bản, không thỏa hiệp",
     description:
-      "Mỗi tổ yến đều được kiểm tra kỹ lưỡng. Chúng tôi nói không với yến tẩm ướp, yến pha trộn, hay bất kỳ hóa chất bảo quản nào. Sản phẩm đến tay bạn là yến thật — nguyên bản như thiên nhiên ban tặng.",
+      "Mỗi tổ yến đều được kiểm tra kỹ lưỡng bởi những người thợ gia đình kinh nghiệm nhất. Chúng tôi nói không với yến tẩm ướp, yến pha trộn, chà thuốc tẩy hay bất kỳ hóa chất bảo quản nào. Sản phẩm đến tay bạn là sự chắt lọc tinh hoa từ đôi bàn tay cần mẫn.",
     icon: Shield,
   },
   {
     year: "Hiện tại",
-    title: "Đồng hành cùng sức khỏe gia đình Việt",
+    title: "Di sản sức khỏe trao tay",
     description:
-      "Hàng nghìn gia đình đã tin tưởng lựa chọn chúng tôi. Từ bà bầu, trẻ nhỏ, đến người lớn tuổi — mỗi sản phẩm chúng tôi gửi đi đều mang theo lời cam kết: chất lượng như chính dành cho gia đình mình.",
+      "Hàng nghìn gia đình đã coi Bình An như một 'người giữ kho báu sức khỏe' bí mật của dòng họ. Không chỉ là yến sào, mỗi hộp quà gửi đi mang theo uy tín và lời cam kết bất diệt về một chữ 'TÂM' suốt hơn 10 năm qua.",
     icon: Users,
   },
 ];

@@ -9,19 +9,23 @@ export const metadata = {
 const FAQS = [
   {
     question: "Tổ yến của Bình An có thực sự tự nhiên 100% không?",
-    answer: "Tuyệt đối tự nhiên! Từng tổ yến tại Bình An được những người thợ yến lành nghề nhất tại Khánh Hòa tự tay hái trực tiếp từ các vách đá và nhà yến chuẩn sinh thái. Chúng tôi từ chối mọi chất tẩy trắng, đường hóa học, hay mủ trôm độn. Bạn đang thưởng thức những tinh hoa thuần khiết nhất mà đại ngàn chắt lọc."
+    answer: "Tuyệt đối tự nhiên! Hơn 10 năm qua, gia đình chúng tôi tự tay chọn lọc từng tổ yến nguyên bản nhất. Không qua xưởng lớn, không sản xuất hàng loạt, mỗi gram yến đều được những người thợ gia đình tỉ mẩn làm sạch thủ công bằng nhíp chuyên dụng. Trải qua hơn một thập kỷ, Bình An tự hào chưa từng dùng đến dù chỉ một giọt chất tẩy trắng hay hương liệu công nghiệp nào."
+  },
+  {
+    question: "Tại sao yến Bình An ít làm quảng cáo hay xin các loại giấy tờ truyền thống?",
+    answer: "Khởi nguồn từ một xưởng sấy yến nhỏ của gia đình mười năm trước, khách hàng chủ yếu của chúng tôi là các vị sếp lớn ở tỉnh, những gia đình có 'gu' thưởng thức sành sỏi và những người con tìm thuốc quý phục hồi sức khỏe cho cha mẹ ôm đau. Uy tín của Bình An không đến từ một tờ giấy chứng nhận đóng khung treo tường, mà đến từ niềm tin truyền miệng vô giá của những vị khách khó tính nhất suốt thập kỷ qua."
   },
   {
     question: "Mua yến về lỡ chưng bị nát hay không nở thì làm sao?",
-    answer: "Đừng lo lắng! Yến Sào Bình An hiểu rằng không phải ai cũng rành cách chưng yến. Khi bạn gặp vấn đề, bất kể là do chất lượng yến hay lỡ quá tay khi chế biến, chúng tôi cam kết quy định Đổi Trả 1-1 không chần chừ. Đội ngũ AI Tư vấn của chúng tôi cũng luôn túc trực 24/7 để làm 'chuyên gia chưng yến' đồng hành cùng bạn mảng bếp núc!"
+    answer: "Đừng lo lắng! Yến Sào Bình An hiểu rằng chất lượng của một mẻ yến tươi phụ thuộc rất nhiều vào công đoạn chưng cất. Dù lỗi do chất lượng tổ hay đôi khi lỡ quá tay khi đứng bếp, xin bạn cứ thoải mái liên hệ! Chúng tôi sẵn sàng '1 Đổi 1' không chần chừ, bởi Bình An không muốn bán cho bạn một hũ yến hỏng mà muốn giữ lại một người bạn trọn đời."
   },
   {
-    question: "Tôi muốn mua biếu đối tác, hộp quà có đủ sang trọng không?",
-    answer: "Bình An không chỉ bán Yến, chúng tôi bán sự Đẳng Cấp và Lời Cảm Ơn. Tất cả các hộp Quà Tặng Yến Chưng, Yến Tinh Chế đều được thiết kế độc quyền, lót lụa tơ tằm, vỏ gỗ sơn mài hoặc bìa nhũ ánh kim. Đảm bảo khi gửi trao, người nhận sẽ cảm nhận trọn vẹn vị thế và tấm lòng của bạn."
+    question: "Tôi muốn mua biếu đối tác quan trọng, hộp quà có đủ sang trọng không?",
+    answer: "Tuy là sản phẩm do gia đình tự làm (home-made) với chất lượng cốt lõi đặt lên hàng đầu, nhưng bao bì của Bình An tuyệt đối không qua loa. Tất cả các hộp Quà Tặng Yến Chưng, Yến Tinh Chế đều được thiết kế độc quyền, lót lụa tơ tằm, vỏ gỗ sơn mài hoặc bìa nhũ ánh kim. Đảm bảo khi gửi trao, người nhận sẽ cảm nhận trọn vẹn vị thế sự đẳng cấp và sự cầu thị trong tấm lòng của bạn."
   },
   {
-    question: "Làm thế nào để phân biệt yến thật giả tại Bình An?",
-    answer: "Bằng 'Hương', bằng 'Sắc', và bằng 'Hồ sơ kỹ thuật'. Mỗi sản phẩm gửi đến bạn đều đi kèm giấy chứng nhận VSATTP và một tờ cẩm nang nhận diện: Yến tự nhiên khi ngửi có mùi tanh nhẹ của biển, ngâm nước nở dai không bị vụn vữa. Hãy yên tâm, vì niềm tự hào lớn nhất của chúng tôi là làm ăn Trực Uy!"
+    question: "Yến chưng tươi tại sao chỉ bảo quản được lâu nhất 1 tháng?",
+    answer: "Chào mừng bạn đến với định nghĩa 'Tươi Nguyên Bản'. Khác với dòng yến công nghiệp chưng sẵn để trên kệ hàng siêu thị từ năm này qua tháng khác, yến của gia đình chúng tôi chỉ bắt đầu đỏ lửa chưng khi nhận được đơn đặt hàng của bạn. Vì không sử dụng bất kỳ một hợp chất bảo quản nào, hũ yến bạn cầm trên tay chính là một món ăn thanh tao vừa nấu xong từ nhà bếp, cần được nâng niu trong tủ lạnh và thưởng thức ngay khi dưỡng chất dồi dào nhất."
   }
 ];
 
