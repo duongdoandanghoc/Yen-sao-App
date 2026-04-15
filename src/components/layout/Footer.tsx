@@ -11,9 +11,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center">
-                <span className="text-white font-serif font-bold text-lg">Y</span>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-full overflow-hidden shadow-gold-glow flex items-center justify-center bg-white">
+                <img src="/favicon.ico" alt="Logo" className="w-9 h-9 object-contain" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-lg text-white">{APP_NAME}</h3>
@@ -25,19 +25,19 @@ export default function Footer() {
               Cam kết 100% tự nhiên, chất lượng hàng đầu Việt Nam.
             </p>
             <InstallPWA />
-            <div className="flex flex-col gap-2 text-sm text-cream-400 mt-6">
+            <div className="flex flex-col gap-3 text-sm text-cream-400 mt-6">
               <a href={CONTACT_INFO.phoneHref} className="flex items-center gap-2 hover:text-primary-400 transition-colors">
-                <Phone size={14} />
+                <Phone size={16} />
                 {CONTACT_INFO.phone}
               </a>
               <a href={CONTACT_INFO.emailHref} className="flex items-center gap-2 hover:text-primary-400 transition-colors">
-                <Mail size={14} />
+                <Mail size={16} />
                 {CONTACT_INFO.email}
               </a>
-              <span className="flex items-center gap-2">
-                <MapPin size={14} />
-                {CONTACT_INFO.address}
-              </span>
+              <a href="https://maps.app.goo.gl/KgMsfHu9vcYKWHwL8" target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 hover:text-primary-400 transition-colors">
+                <MapPin size={16} className="shrink-0 mt-0.5" />
+                <span className="leading-snug">{CONTACT_INFO.address}</span>
+              </a>
             </div>
           </div>
 
