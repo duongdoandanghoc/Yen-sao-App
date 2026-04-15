@@ -14,7 +14,7 @@ export default function HeroSection() {
           <div className="text-center lg:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 rounded-full mb-6">
               <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-primary-700">100% Yến sào tự nhiên Khánh Hòa</span>
+              <span className="text-sm font-medium text-primary-700">Yến Sào Bình An - Thương hiệu uy tín, chất lượng hàng đầu</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brown-900 leading-tight">
