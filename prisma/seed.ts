@@ -31,6 +31,7 @@ async function main() {
         price: p.price,
         originalPrice: p.originalPrice,
         stock: p.stock,
+        images: p.images || [],
       },
       create: {
         name: p.name,
