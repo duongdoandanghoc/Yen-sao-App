@@ -76,8 +76,8 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-gold-gradient flex items-center justify-center mx-auto shadow-gold-glow mb-4">
-            <span className="text-white font-serif font-bold text-2xl">Y</span>
+          <div className="w-16 h-16 rounded-full overflow-hidden mx-auto shadow-gold-glow mb-4 bg-white">
+            <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-serif font-bold text-brown-900">Tạo tài khoản</h1>
           <p className="text-brown-500 mt-1">Tham gia {APP_NAME} để nhận ưu đãi đặc biệt</p>

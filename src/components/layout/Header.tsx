@@ -27,8 +27,8 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center shadow-gold-glow group-hover:scale-110 transition-transform">
-              <span className="text-white font-serif font-bold text-lg">Y</span>
+            <div className="w-10 h-10 rounded-full overflow-hidden shadow-gold-glow group-hover:scale-110 transition-transform">
+              <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover" />
             </div>
             <div className="hidden sm:block">
               <h1 className="font-serif font-bold text-lg text-brown-900 leading-tight">{APP_NAME}</h1>
