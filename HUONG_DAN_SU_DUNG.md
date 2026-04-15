@@ -756,7 +756,9 @@ GitHub là nơi lưu trữ code trên internet, giống "Google Drive cho code".
 
    > 📌 **Cách thêm từng biến**: Nhập tên vào ô **"Key"** (hoặc **"Name"**) → Nhập giá trị vào ô **"Value"** → Nhấn **"Add"** → Lặp lại cho biến tiếp theo
    >
-   > 📌 **Lấy giá trị `DATABASE_URL`**: Copy từ file `.env` trên máy bạn (đã sửa ở [Mục 8 Bước 6](#bước-6-cập-nhật-file-env-trên-máy-tính))
+   > 🚨 **CẢNH BÁO CỰC KỲ QUAN TRỌNG:** Tuyệt đối **KHÔNG gõ dấu ngoặc kép `"`** ở phần Value khi điền trên giao diện web của Vercel (khác với khi làm ở file `.env` trên máy tính). Nếu bạn điền dấu `"` vào Vercel, trang web sẽ bị sập vì lỗi chứa ký tự lạ trong đường dẫn cơ sở dữ liệu.
+   >
+   > 📌 **Lấy giá trị `DATABASE_URL`**: Copy nội dung link từ file `.env` trên máy tính (nhớ KHÔNG lấy dấu `"` ở 2 đầu).
    >
    > ⚠️ **`NEXTAUTH_URL`**: Lần đầu deploy chưa biết URL chính xác → Nhập tạm `https://yen-sao-store.vercel.app`. Sau khi deploy xong, quay lại sửa cho đúng (xem Bước cập nhật URL bên dưới).
 

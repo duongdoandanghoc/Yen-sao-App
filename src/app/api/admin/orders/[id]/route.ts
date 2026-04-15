@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
 const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
-export const dynamic = isMobile ? "force-static" : "force-dynamic";
+export const dynamic = "force-dynamic";
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (isMobile) {

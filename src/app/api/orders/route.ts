@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 
 const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
 
-export const dynamic = isMobile ? "force-static" : "force-dynamic";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   if (isMobile) {
