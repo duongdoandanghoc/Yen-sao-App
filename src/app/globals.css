@@ -1,26 +1,143 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    @apply bg-cream-50 text-brown-800 font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-brown-900;
+  }
+
+  ::selection {
+    @apply bg-primary-200 text-brown-900;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-gold-gradient text-white font-semibold rounded-xl
+           hover:shadow-gold-glow transition-all duration-300 active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-white text-brown-800 font-semibold rounded-xl
+           border-2 border-primary-200 hover:border-primary-400 hover:bg-primary-50
+           transition-all duration-300 active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 text-brown-700 font-medium rounded-lg
+           hover:bg-brown-50 transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-warm-sm border border-cream-300/50 
+           hover:shadow-warm-md transition-shadow duration-300;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-2xl shadow-warm-md border border-cream-200
+           hover:shadow-warm-lg transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-cream-300 rounded-xl text-brown-800
+           placeholder:text-brown-400 focus:outline-none focus:ring-2 focus:ring-primary-300 
+           focus:border-primary-400 transition-all duration-200;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-serif font-bold text-brown-900 text-center;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-brown-500 text-center max-w-2xl mx-auto mt-3;
+  }
+
+  .gold-divider {
+    @apply w-16 h-1 bg-gold-gradient mx-auto rounded-full;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-gold {
+    @apply badge bg-primary-100 text-primary-700;
+  }
+
+  .badge-new {
+    @apply badge bg-success-50 text-success-600;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Scrollbar Styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-cream-100 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary-300 rounded-full hover:bg-primary-400;
+  }
+
+  /* Star Rating */
+  .star-filled {
+    @apply text-primary-500;
+  }
+  .star-empty {
+    @apply text-cream-300;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gold-gradient;
+  }
+
+  .glass {
+    @apply bg-white/80 backdrop-blur-md;
+  }
+
+  .glass-dark {
+    @apply bg-brown-900/80 backdrop-blur-md;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Mobile-first touch targets */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary {
+    @apply min-h-[48px] text-base;
+  }
+
+  .input-field {
+    @apply min-h-[48px] text-base;
+  }
 }

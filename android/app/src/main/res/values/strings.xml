@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Yến Sào Bình An</string>
+    <string name="title_activity_main">Yến Sào Bình An</string>
+    <string name="package_name">com.yensaobinhan.app</string>
+    <string name="custom_url_scheme">com.yensaobinhan.app</string>
+</resources>

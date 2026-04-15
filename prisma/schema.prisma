@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ProductCategory {
+  RAW
+  REFINED
+  READY_TO_EAT
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  COD
+  VNPAY
+  MOMO
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+}
+
+enum SubscriptionFrequency {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String    @unique
+  password      String
+  phone         String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  reviews       Review[]
+  subscriptions Subscription[]
+}
+
+model Address {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  fullName  String
+  phone     String
+  street    String
+  ward      String
+  district  String
+  city      String
+  isDefault Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  slug             String          @unique
+  description      String
+  shortDescription String
+  price            Float
+  originalPrice    Float?
+  images           String[]
+  category         ProductCategory
+  benefits         String[]
+  usage            String?
+  tags             String[]
+  stock            Int             @default(100)
+  averageRating    Float           @default(0)
+  reviewCount      Int             @default(0)
+  featured         Boolean         @default(false)
+  active           Boolean         @default(true)
+  weight           String?
+  origin           String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  reviews          Review[]
+  orderItems       OrderItem[]
+  subscriptionItems SubscriptionItem[]
+}
+
+model Order {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String        @db.ObjectId
+  orderNumber     String        @unique
+  status          OrderStatus   @default(PENDING)
+  subtotal        Float
+  shippingFee     Float         @default(0)
+  discount        Float         @default(0)
+  total           Float
+  paymentMethod   PaymentMethod @default(COD)
+  paymentStatus   PaymentStatus @default(PENDING)
+  shippingName    String
+  shippingPhone   String
+  shippingAddress String
+  note            String?
+  discountCode    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+}
+
+model OrderItem {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId     String @db.ObjectId
+  productId   String @db.ObjectId
+  productName String
+  productImage String?
+  price       Float
+  quantity    Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  rating    Int
+  comment   String
+  approved  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id              String              @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String              @db.ObjectId
+  frequency       SubscriptionFrequency
+  status          SubscriptionStatus  @default(ACTIVE)
+  nextDelivery    DateTime
+  shippingAddress String
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  user  User               @relation(fields: [userId], references: [id])
+  items SubscriptionItem[]
+}
+
+model SubscriptionItem {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  subscriptionId String @db.ObjectId
+  productId      String @db.ObjectId
+  quantity       Int
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  product      Product      @relation(fields: [productId], references: [id])
+}
+
+model DiscountCode {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  code          String       @unique
+  type          DiscountType
+  value         Float
+  minOrderValue Float        @default(0)
+  maxUses       Int          @default(100)
+  usedCount     Int          @default(0)
+  validFrom     DateTime
+  validTo       DateTime
+  active        Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+}
+
+model BlogPost {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  slug       String   @unique
+  content    String
+  excerpt    String
+  coverImage String?
+  tags       String[]
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
