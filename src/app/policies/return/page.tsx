@@ -1,12 +1,35 @@
-import { Link } from "next-view-transitions";
-import { ShieldCheck, ArrowLeft, HeartHandshake, RefreshCcw } from "lucide-react";
+"use client";
 
-export const metadata = {
-  title: "Chính Sách Đổi Trả - Yến Sào Bình An",
-  description: "Trải nghiệm Đổi trả chuẩn Quốc tế 5 Sao. Quyền lợi của bạn là ưu tiên số một của chúng tôi.",
-};
+import { Link } from "next-view-transitions";
+import { ShieldCheck, ArrowLeft, HeartHandshake, RefreshCcw, Send, AlertTriangle } from "lucide-react";
+import { useState } from "react";
+import { CONTACT_INFO } from "@/lib/constants";
 
 export default function ReturnPolicyPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    orderCode: "",
+    reason: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Gửi trực tiếp email qua mailto (Tối ưu 100% không tốn DB)
+    const subject = encodeURIComponent(`Yêu Cầu Đổi Trả Yến Sào - Đơn ${formData.orderCode}`);
+    const body = encodeURIComponent(
+      `Chào Bình An,\n\nTôi muốn yêu cầu đổi trả với thông tin như sau:\n\n` +
+      `- Tên khách hàng: ${formData.name}\n` +
+      `- Số điện thoại: ${formData.phone}\n` +
+      `- Mã đơn hàng (nếu có): ${formData.orderCode}\n` +
+      `- Lý do / Vấn đề gặp phải: ${formData.reason}\n\n` +
+      `Mong shop xử lý giúp tôi. Xin cảm ơn!`
+    );
+
+    window.location.href = `mailto:${CONTACT_INFO.email}?subject=${subject}&body=${body}`;
+  };
+
   return (
     <div className="bg-cream-50 min-h-screen py-16">
       <div className="container-custom max-w-4xl">
@@ -20,11 +43,10 @@ export default function ReturnPolicyPage() {
             <HeartHandshake size={36} className="text-primary-600" />
           </div>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brown-900 mb-6">
-            Lời Hứa Đồng Hành Trọn Vẹn
+            Đổi Trả Dễ Dàng - An Tâm Trải Nghiệm
           </h1>
           <p className="text-lg text-brown-600 max-w-2xl mx-auto leading-relaxed">
-            Tại Yến Sào Bình An, chúng tôi không "bán hàng". Chúng tôi trao đi sức khỏe và 
-            nhận lại niềm tin. Bát yến của bạn phải thực sự hoàn hảo.
+            Tại Yến Sào Bình An, chúng tôi trao đi sức khỏe và nhận lại niềm tin. Bát yến của bạn phải thực sự hoàn hảo.
           </p>
         </div>
 
@@ -32,20 +54,28 @@ export default function ReturnPolicyPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-serif font-bold text-brown-900 flex items-center gap-3 mb-6">
               <RefreshCcw size={24} className="text-primary-500" />
-              1. Đặc Quyền Đổi Trả 7 Ngày Tự Do
+              1. Khung Thời Gian Đặc Biệt (Lưu Ý Quan Trọng)
             </h2>
             <div className="space-y-4 text-brown-700 leading-relaxed">
-              <p>
-                Để bạn hoàn toàn an tâm trao gửi sức khỏe, Yến Sào Bình An áp dụng chính sách <b>1-ĐỔI-1</b> hoặc <b>HOÀN TIỀN 100%</b> trong vòng 7 ngày đầu tiên sau khi nhận hàng. Bất cứ khi nào bạn cảm thấy:
-              </p>
-              <ul className="list-disc pl-6 space-y-2 text-brown-600">
-                <li>Sợi yến khi chưng không nở dai, thơm tự nhiên như cam kết.</li>
-                <li>Quà tặng bị móp méo, trầy xước trong quá trình di chuyển khiến bạn mất vui.</li>
-                <li>Sản phẩm giao không đúng chủng loại, hoặc không phù hợp với khẩu vị của người được đem tặng.</li>
-              </ul>
-              <p className="mt-4 font-medium text-primary-700 bg-primary-50 p-4 rounded-xl border border-primary-100">
-                Chỉ cần bạn thông báo, chúng tôi sẽ cho bưu tá đến tận nhà tút lại hộp yến mới hoặc hoàn tiền ngay trong vòng 24H mà không cần bạn phải giải trình hay chờ đợi mệt mỏi!
-              </p>
+              <p>Khác với các dòng sản phẩm công nghiệp, Yến Sào Bình An đề cao tính tự nhiên nguyên bản. Vì vậy, chính sách đổi trả được phân tách rõ ràng để đảm bảo trải nghiệm tốt nhất:</p>
+              
+              <div className="bg-orange-50 border border-orange-200 p-5 rounded-2xl">
+                 <h4 className="font-bold text-orange-900 flex items-center gap-2 mb-2">
+                   <AlertTriangle size={18} className="text-orange-600" />
+                   Đối với Yến Chưng Tươi (Không chất bảo quản)
+                 </h4>
+                 <p className="text-orange-800 text-sm">
+                   Yến chưng sẵn của chúng tôi hoàn toàn <strong>không có chất bảo quản</strong>, hạn sử dụng vô cùng ngắn (tối đa 1 tháng ở nhiệt độ lạnh). 
+                   Quý khách vui lòng kiểm tra và báo ngay cho shop đổi trả trong vòng <b>24 Giờ</b> kể từ khi nhận hàng nếu hũ yến có dấu hiệu bong nắp, sủi bọt, hoặc có mùi vị lạ do lỗi vận chuyển!
+                 </p>
+              </div>
+
+              <div className="bg-primary-50 border border-primary-100 p-5 rounded-2xl">
+                 <h4 className="font-bold text-primary-900 mb-2">Đối với Yến Thô & Yến Tinh Chế</h4>
+                 <p className="text-primary-800 text-sm">
+                   Quý khách có toàn quyền yêu cầu <b>1-ĐỔI-1 hoặc Hoàn Tiền</b> trong vòng <b>7 Ngày</b> sau khi nhận nếu sợi yến phát hiện không thật, bị vỡ vụn nghiêm trọng, hoặc không nở dai tự nhiên khi chưng.
+                 </p>
+              </div>
             </div>
           </section>
 
@@ -57,32 +87,73 @@ export default function ReturnPolicyPage() {
             <div className="space-y-4 text-brown-700 leading-relaxed">
               <p>Dù luôn tin tưởng 100% vào sự trung thực của khách hàng, để đảm bảo vệ sinh an toàn thực phẩm, chúng tôi xin phép áp dụng quy định sau:</p>
               <ul className="list-disc pl-6 space-y-2 text-brown-600">
-                <li>Sản phẩm yến thô và tinh chế: <b className="text-brown-800">Quy cách đóng gói và tem chống hàng giả vẫn còn nguyên vẹn.</b> (Với trường hợp chất lượng yến khi chưng có vấn đề, Yến Sào Bình An sẽ thu hồi toàn bộ phân lượng yến còn lại để đưa về phòng thí nghiệm kiểm tra).</li>
+                <li><b className="text-brown-800">Quy cách đóng gói và tem chống hàng giả vẫn còn nguyên vẹn</b> (trừ trường hợp yến chưng tươi bị hỏng).</li>
                 <li>Hộp quà tặng: Sản phẩm chưa có dấu hiệu bị bóc mở, sử dụng hoặc bảo quản sai cách (để nơi ẩm mốc, nắng gắt).</li>
               </ul>
             </div>
           </section>
 
-          <section>
-            <h2 className="text-2xl font-serif font-bold text-brown-900 mb-6">Cách Thức Trải Nghiệm Quyền Lợi</h2>
-            <div className="bg-brown-900 rounded-2xl p-6 text-cream-100">
-              <p className="mb-4">Chỉ mất 2 bước duy nhất để chúng tôi phục vụ bạn:</p>
-              <div className="space-y-4">
-                <div className="flex gap-4 items-start">
-                  <div className="w-8 h-8 rounded-full bg-gold-gradient text-white flex justify-center items-center font-bold flex-shrink-0">1</div>
-                  <div>
-                    <h4 className="font-semibold text-white mb-1">Gửi Yêu Cầu</h4>
-                    <p className="text-sm text-cream-300">Nhắn tin cho Chatbot hoặc liên hệ trực tiếp số Hotline: <b>0982 812 936</b>. Mọi yêu cầu được ghi nhận tự động ngày và đêm.</p>
+          <section id="form-doi-tra">
+            <h2 className="text-2xl font-serif font-bold text-brown-900 mb-6">Tạo Yêu Cầu Nhanh Vào Email Admin</h2>
+            <div className="bg-cream-50 rounded-2xl p-6 md:p-8 border border-cream-200">
+              <p className="text-brown-600 mb-6 text-sm">
+                Phiếu yêu cầu này sẽ được nén và mã hóa chuyển thẳng vào hòm thư nội bộ của Giám Đốc cửa hàng mà không cần máy chủ trung gian phức tạp, đảm bảo phản hồi tức thì về điện thoại nội bộ.
+              </p>
+              
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-brown-800">Họ và tên của bạn</label>
+                    <input 
+                      required 
+                      type="text" 
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="VD: Nguyễn Văn A" 
+                      className="w-full bg-white border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/50" 
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-brown-800">Số điện thoại liên lạc</label>
+                    <input 
+                      required 
+                      type="tel" 
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="VD: 0982..." 
+                      className="w-full bg-white border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/50" 
+                    />
                   </div>
                 </div>
-                <div className="flex gap-4 items-start">
-                  <div className="w-8 h-8 rounded-full bg-gold-gradient text-white flex justify-center items-center font-bold flex-shrink-0">2</div>
-                  <div>
-                    <h4 className="font-semibold text-white mb-1">Nghỉ Ngơi & Nhận Kết Quả</h4>
-                    <p className="text-sm text-cream-300">Nhân viên của chúng tôi sẽ gọi lại ngay lập tức để xác nhận địa chỉ hoàn trả miễn phí. Bạn không phải chịu bất cứ rủi ro tài chính nào.</p>
-                  </div>
+                
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-brown-800">Mã đơn hàng (Nếu nhớ)</label>
+                  <input 
+                    type="text" 
+                    value={formData.orderCode}
+                    onChange={(e) => setFormData({ ...formData, orderCode: e.target.value })}
+                    placeholder="VD: BAN-12345" 
+                    className="w-full bg-white border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/50" 
+                  />
                 </div>
-              </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-brown-800">Trở ngại bạn đang gặp là gì?</label>
+                  <textarea 
+                    required 
+                    rows={4}
+                    value={formData.reason}
+                    onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                    placeholder="Hộp yến giao đến bị móp méo, góc trái bị rách..." 
+                    className="w-full bg-white border border-cream-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none" 
+                  />
+                </div>
+
+                <button type="submit" className="w-full btn-primary py-4 gap-2 text-base mt-2">
+                  <Send size={18} />
+                  Nhấn Để Gửi Ngay Cho Admin
+                </button>
+              </form>
             </div>
           </section>
         </div>
