@@ -68,7 +68,7 @@ export default function ChatbotWidget() {
             </div>
             <div>
               <h3 className="font-semibold text-white text-sm">Tư Vấn Yến Sào (AI)</h3>
-              <p className="text-white/80 text-xs">Trực tuyến • Tích hợp DeepSeek</p>
+              <p className="text-white/80 text-xs">Trực tuyến • Sẵn sàng hỗ trợ</p>
             </div>
           </div>
 
@@ -85,6 +85,14 @@ export default function ChatbotWidget() {
                 </div>
               </div>
             ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                 <div className="bg-cream-100 p-3 py-2 rounded-2xl rounded-bl-md flex items-center gap-2">
+                   <Loader2 size={16} className="animate-spin text-brown-500" />
+                   <span className="text-xs text-brown-600 italic animate-pulse">AI của Yến Sào Bình An đang suy nghĩ để đưa cho bạn câu trả lời tốt nhất...</span>
+                 </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
