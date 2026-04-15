@@ -21,8 +21,14 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image */}
       <Link href={`/products/${product.slug}`} className="block relative">
         <div className="aspect-square bg-cream-100 flex items-center justify-center overflow-hidden">
-          <div className="text-6xl group-hover:scale-110 transition-transform duration-500">
-            {product.category === "RAW" ? "🪹" : product.category === "REFINED" ? "✨" : "🍯"}
+          <div className="w-full h-full group-hover:scale-110 transition-transform duration-500">
+            {product.images && product.images.length > 0 ? (
+              <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="text-6xl flex items-center justify-center h-full">
+                {product.category === "RAW" ? "🪹" : product.category === "REFINED" ? "✨" : "🍯"}
+              </div>
+            )}
           </div>
         </div>
 

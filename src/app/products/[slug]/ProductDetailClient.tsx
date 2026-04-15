@@ -47,10 +47,14 @@ export default function ProductDetailClient({ product }: { product: ProductType 
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Product Image */}
         <div className="space-y-4">
-          <div className="aspect-square bg-cream-100 rounded-2xl flex items-center justify-center overflow-hidden relative">
-            <span className="text-[120px]">
-              {product.category === "RAW" ? "🪹" : product.category === "REFINED" ? "✨" : "🍯"}
-            </span>
+          <div className="aspect-square bg-cream-100 rounded-2xl flex items-center justify-center overflow-hidden relative group">
+            {product.images && product.images.length > 0 ? (
+              <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            ) : (
+              <span className="text-[120px]">
+                {product.category === "RAW" ? "🪹" : product.category === "REFINED" ? "✨" : "🍯"}
+              </span>
+            )}
             {discount > 0 && (
               <span className="absolute top-4 left-4 badge bg-error-500 text-white">-{discount}%</span>
             )}

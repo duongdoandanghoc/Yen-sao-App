@@ -58,8 +58,12 @@ export default function AdminProductsPage() {
                 <tr key={product.id} className="border-b border-cream-100 hover:bg-cream-50 transition-colors">
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-cream-100 rounded-lg flex items-center justify-center text-lg">
-                        {product.category === "RAW" ? "🪹" : product.category === "REFINED" ? "✨" : "🍯"}
+                      <div className="w-10 h-10 bg-cream-100 rounded-lg overflow-hidden flex items-center justify-center text-lg">
+                        {product.images && product.images.length > 0 ? (
+                          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span>{product.category === "RAW" ? "🪹" : product.category === "REFINED" ? "✨" : "🍯"}</span>
+                        )}
                       </div>
                       <div>
                         <p className="font-medium text-brown-900">{product.name}</p>
