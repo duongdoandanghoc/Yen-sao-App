@@ -1,4 +1,4 @@
-# 📖 HƯỚNG DẪN SỬ DỤNG - YẾN SÀO BÌNH AN
+﻿# 📖 HƯỚNG DẪN SỬ DỤNG - YẾN SÀO BÌNH AN
 
 > Tài liệu hướng dẫn chi tiết dành cho người không biết lập trình.
 > Cập nhật: 15/04/2026
@@ -748,8 +748,8 @@ GitHub là nơi lưu trữ code trên internet, giống "Google Drive cho code".
 
    | Name (Tên) | Value (Giá trị) |
    |------------|-----------------|
-   | `DATABASE_URL` | `mongodb+srv://yensao_admin:MatKhauCuaBan@yensao-cluster.abc123.mongodb.net/yensao?retryWrites=true&w=majority` |
-   | `AUTH_SECRET` | `thay-bang-chuoi-bi-mat-bat-ky-dai-hon-32-ky-tu` |
+   | `DATABASE_URL` | `mongodb+srv://yensao_admin:hzduongpro@yensao-cluster.pkf0r2o.mongodb.net/yensao?appName=yensao-cluster` |
+   | `AUTH_SECRET` | `your-super-secret-key-change-in-production-yensao-2026` |
    | `NEXTAUTH_URL` | `https://yen-sao-store.vercel.app` (thay bằng URL thật sau khi deploy) |
    | `NEXT_PUBLIC_APP_URL` | `https://yen-sao-store.vercel.app` (thay bằng URL thật sau khi deploy) |
    | `NEXT_PUBLIC_APP_NAME` | `Yến Sào Bình An` |
@@ -1374,6 +1374,141 @@ Nếu gặp vấn đề trong quá trình sử dụng, bạn có thể:
 | `F5` | Refresh trình duyệt |
 | `Ctrl + Shift + I` | Mở DevTools (cho developer) |
 | `Ctrl + L` | Chọn thanh địa chỉ trình duyệt |
+
+
+---
+
+## 17. Hướng Dẫn Tính Năng Mới (Cập nhật 16/04/2026)
+
+### 17.1. Trang Tài Khoản Người Dùng (Account Hub)
+
+Sau khi đăng nhập, khách hàng có thể truy cập **http://localhost:3000/account** để quản lý toàn bộ tài khoản.
+
+#### Các trang trong Account Hub:
+
+| Trang | Địa chỉ | Chức năng |
+|-------|---------|-----------|
+| 🏠 Tổng quan | `/account` | Menu nhanh, tóm tắt điểm và đơn hàng |
+| 👤 Thông tin cá nhân | `/account/profile` | Sửa tên, SĐT, ngày sinh, giới tính |
+| 📦 Đơn hàng | `/account/orders` | Xem tất cả đơn hàng + tracking timeline |
+| 📍 Địa chỉ | `/account/addresses` | Thêm/sửa/xóa địa chỉ nhận hàng |
+| ❤️ Yêu thích | `/account/wishlist` | Danh sách sản phẩm đã lưu |
+| 🏆 Điểm tích lũy | `/account/loyalty` | Xem điểm, lịch sử, hạng thành viên |
+| 🔔 Thông báo | `/account/notifications` | Cài đặt thông báo đơn hàng / khuyến mãi |
+| 🔐 Đổi mật khẩu | `/account/change-password` | Cập nhật mật khẩu |
+
+---
+
+### 17.2. Hệ Thống Điểm Tích Lũy & Hạng Thành Viên
+
+#### Cách tích điểm:
+- Mỗi đơn hàng hoàn thành: **1.000đ chi tiêu = 1 điểm**
+- Ví dụ: Đơn 500.000đ → +500 điểm
+
+#### Cách dùng điểm (giảm giá):
+- **1 điểm = 50đ giảm giá**
+- Tối đa dùng điểm cho **20% giá trị đơn hàng**
+- Ví dụ: Đơn 1.000.000đ → có thể dùng tối đa điểm tương đương 200.000đ (= 4.000 điểm)
+
+#### Hạng thành viên:
+
+| Hạng | Icon | Điểm cần | Bonus điểm |
+|------|------|----------|-----------|
+| Đồng | 🥉 | 0+ điểm | +0% |
+| Bạc | 🥈 | 1.000+ điểm | +5% |
+| Vàng | 🥇 | 5.000+ điểm | +10% |
+| Kim Cương | 💎 | 20.000+ điểm | +15% |
+
+---
+
+### 17.3. Dùng Điểm Khi Thanh Toán
+
+Tại trang thanh toán `/checkout`, bước 2 có **2 ô giảm giá nằm cạnh nhau**:
+
+**Ô trái — Mã giảm giá:** Nhập mã → Nhấn "Áp dụng"
+
+**Ô phải — Dùng điểm tích lũy:**
+- Hệ thống tự tải điểm hiện có sau khi đăng nhập
+- Dùng nút "−" và "+" để chọn số điểm (bước 100)
+- Nhấn "Dùng tất" để dùng tối đa cho phép
+- Thấy ngay số tiền giảm tương ứng
+- Nhấn "Bỏ" để hủy sử dụng điểm
+
+---
+
+### 17.4. Quản Lý Mã Giảm Giá (Admin)
+
+#### Mã giảm giá hiện có:
+
+| Mã | Loại | Giá trị | Đơn tối thiểu |
+|----|------|---------|--------------|
+| `YENSAO10` | Giảm % | 10% | 500.000đ |
+| `FREESHIP` | Giảm cố định | 30.000đ | 300.000đ |
+| `WELCOME20` | Giảm % | 20% | 1.000.000đ |
+
+#### Cách thêm mã giảm giá mới:
+
+1. Mở file: `src\app\checkout\page.tsx`
+2. Tìm đoạn code trong hàm `applyDiscount` (khoảng dòng 98-103):
+   ```
+   const discounts = {
+     YENSAO10: { type: "percent", value: 10, min: 500000 },
+     FREESHIP: { type: "fixed", value: 30000, min: 300000 },
+     WELCOME20: { type: "percent", value: 20, min: 1000000 },
+   };
+   ```
+3. Thêm dòng mới (ví dụ mã giảm 15% cho đơn từ 700.000đ):
+   ```
+   TETHOLIDAY: { type: "percent", value: 15, min: 700000 },
+   ```
+4. Lưu file → Push GitHub → Vercel tự deploy
+
+#### Cách xóa mã giảm giá:
+- Xóa dòng tương ứng trong đoạn code trên → lưu → push GitHub
+
+#### Giải thích các trường:
+| Trường | Ý nghĩa | Ví dụ |
+|--------|---------|-------|
+| `type: "percent"` | Giảm theo % | `value: 10` = giảm 10% |
+| `type: "fixed"` | Giảm số tiền cố định | `value: 30000` = giảm 30.000đ |
+| `min` | Đơn hàng tối thiểu (đồng) | `500000` = đơn từ 500.000đ |
+
+---
+
+### 17.5. Tính Năng Yêu Thích (Wishlist)
+
+- Mỗi card sản phẩm có **nút ❤️** góc trên bên phải
+- Nhấn ❤️ → Sản phẩm được lưu vào Yêu thích (icon chuyển đỏ/hồng)
+- Xem danh sách tại: `/account/wishlist`
+- Yêu cầu đăng nhập. Nếu chưa đăng nhập, nhấn ❤️ sẽ chuyển đến trang đăng nhập
+
+---
+
+### 17.6. Admin Dashboard Nâng Cấp
+
+Trang `/admin` đã được nâng cấp:
+
+- **4 thẻ thống kê** có thể nhấn vào → dẫn tới trang tương ứng
+- **Biểu đồ thanh** thể hiện đơn hàng theo từng trạng thái
+- **Đơn hàng mới nhất** — xem chi tiết sản phẩm trong từng đơn
+- **Tài khoản mới nhất** — danh sách user đăng ký gần đây
+
+Trang `/admin/accounts` — Quản lý tài khoản:
+- Xem hạng thành viên + điểm tích lũy của từng user
+- Badge màu theo hạng (Đồng/Bạc/Vàng/Kim Cương)
+
+#### Mã đơn hàng mới:
+Format: **`YS-YYMMDD-XXXX`** (ví dụ: `YS-260416-A1B2`)
+
+---
+
+### 17.7. Xử Lý Lỗi Thường Gặp Sau Cập Nhật
+
+| Lỗi | Nguyên nhân | Cách sửa |
+|-----|-------------|---------|
+| Điểm hiển thị 0 dù đã mua hàng | Dữ liệu chưa đồng bộ | Truy cập `/account/loyalty` — hệ thống tự đồng bộ khi vào trang |
+| Đăng nhập lỗi "server error" | API auth bị static | Đã vá — push code mới nhất lên GitHub |
+| Giỏ hàng báo "dữ liệu cũ" | ID sản phẩm cũ lưu trong cache | Xóa cache trình duyệt (Ctrl+Shift+Delete) hoặc mở tab ẩn danh |
 
 ---
 

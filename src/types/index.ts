@@ -155,11 +155,13 @@ export interface RecommendationInput {
 // Loyalty constants
 export const LOYALTY_RATE = 1000; // 1 point per 1000đ spent
 export const LOYALTY_REDEEM_VALUE = 50; // 1 point = 50đ discount (5% effective cashback)
+export const LOYALTY_MAX_REDEEM_PERCENT = 20; // max 20% of order can be paid with points
+
 export const LOYALTY_TIERS = [
-  { name: "Đồng", icon: "🥉", minPoints: 0, bonusRate: 0 },
-  { name: "Bạc", icon: "🥈", minPoints: 500, bonusRate: 0.05 },
-  { name: "Vàng", icon: "🥇", minPoints: 2000, bonusRate: 0.10 },
-  { name: "Kim Cương", icon: "💎", minPoints: 10000, bonusRate: 0.15 },
+  { name: "Đồng",      icon: "🥉", minPoints: 0,     bonusRate: 0,    color: "text-orange-600 bg-orange-50",  border: "border-orange-200" },
+  { name: "Bạc",       icon: "🥈", minPoints: 1000,  bonusRate: 0.05, color: "text-gray-600 bg-gray-100",     border: "border-gray-200" },
+  { name: "Vàng",      icon: "🥇", minPoints: 5000,  bonusRate: 0.10, color: "text-yellow-600 bg-yellow-50",  border: "border-yellow-200" },
+  { name: "Kim Cương", icon: "💎", minPoints: 20000, bonusRate: 0.15, color: "text-purple-600 bg-purple-50",  border: "border-purple-200" },
 ] as const;
 
 export function getMemberTier(points: number) {
@@ -168,3 +170,4 @@ export function getMemberTier(points: number) {
   }
   return LOYALTY_TIERS[0];
 }
+
