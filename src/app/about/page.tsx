@@ -13,28 +13,28 @@ const milestones = [
     year: "Khởi nguồn (Hơn 10 năm trước)",
     title: "Từ mâm yến nhỏ của gia đình",
     description:
-      "Bình An không bắt đầu bằng một bản kế hoạch kinh doanh hoành tráng. Mọi thứ bắt nguồn từ hơn 10 năm trước, khi gia đình chúng tôi tự tay nhặt những tổ yến thuần khiết nhất từ vách đá để bồi bổ cho người thân ốm đau. Sự thủ công, tỉ mỉ và cái tâm của người nhà làm cho nhau chính là viên gạch đầu tiên.",
+      "Bình An không bắt đầu bằng một bản kế hoạch kinh doanh hoành tráng. Mọi thứ bắt nguồn từ hơn 10 năm trước, khi bà Nguyễn Thị Thanh An tự tay nhặt những tổ yến thuần khiết nhất được lấy từ vách đá để bồi bổ cho người thân ốm đau. Sự thủ công, tỉ mỉ và cái tâm của người nhà làm cho nhau chính là viên gạch đầu tiên.",
     icon: Heart,
   },
   {
     year: "Hành trình",
     title: "Chinh phục những vị khách khắt khe nhất",
     description:
-      "Suốt một thập kỷ, Bình An hiếm khi xuất hiện trên các quảng cáo rầm rộ hay sở hữu những tờ giấy chứng nhận hào nhoáng. Thế nhưng, sản phẩm của chúng tôi luôn cháy hàng nhờ sự truyền miệng của các vị sếp lớn ở tỉnh, những gia đình sành ăn, và những người con tìm thuốc quý phục hồi sức khỏe cho cha mẹ.",
+      "Suốt một thập kỷ, Bình An hiếm khi xuất hiện trên các quảng cáo rầm rộ hay sở hữu những tờ giấy chứng nhận hào nhoáng. Thế nhưng, sản phẩm của chúng tôi luôn cháy hàng nhờ sự truyền miệng của các vị sếp lớn ở tỉnh, những gia đình sành ăn, và những người con tìm thuốc quý phục hồi, bồi bổ sức khỏe cho cha mẹ.",
     icon: MapPin,
   },
   {
     year: "Cam kết",
     title: "100% thủ công nguyên bản, không thỏa hiệp",
     description:
-      "Mỗi tổ yến đều được kiểm tra kỹ lưỡng bởi những người thợ gia đình kinh nghiệm nhất. Chúng tôi nói không với yến tẩm ướp, yến pha trộn, chà thuốc tẩy hay bất kỳ hóa chất bảo quản nào. Sản phẩm đến tay bạn là sự chắt lọc tinh hoa từ đôi bàn tay cần mẫn.",
+      "Mỗi tổ yến đều được kiểm tra kỹ lưỡng bởi chính bà chủ An, người đã hơn 10 năm cặm cụi nhặt những tổ yến để chưng cho khách. Chúng tôi nói không với yến tẩm ướp, yến pha trộn, chà thuốc tẩy hay bất kỳ hóa chất bảo quản nào. Sản phẩm đến tay bạn chính là sự chắt lọc tinh hoa từ đôi bàn tay cần mẫn.",
     icon: Shield,
   },
   {
     year: "Hiện tại",
     title: "Di sản sức khỏe trao tay",
     description:
-      "Hàng nghìn gia đình đã coi Bình An như một 'người giữ kho báu sức khỏe' bí mật của dòng họ. Không chỉ là yến sào, mỗi hộp quà gửi đi mang theo uy tín và lời cam kết bất diệt về một chữ 'TÂM' suốt hơn 10 năm qua.",
+      "Rất nhiều gia đình đã coi Yến Sào Bình An như một 'người giữ kho báu sức khỏe' bí mật của dòng họ. Không chỉ là yến sào, mỗi hộp quà gửi đi mang theo uy tín và lời cam kết bất diệt về một chữ 'TÂM' trong suốt hơn 10 năm qua.",
     icon: Users,
   },
 ];
@@ -82,7 +82,7 @@ export default function AboutPage() {
               <span className="text-gradient-gold">chúng tôi trao gửi niềm tin</span>
             </h1>
             <p className="text-lg md:text-xl text-cream-300 leading-relaxed max-w-2xl mx-auto">
-              {APP_NAME} được sinh ra từ một mong muốn giản dị: mang đến nguồn yến sào thật sự 
+              {APP_NAME} được sinh ra từ một mong muốn giản dị: mang đến nguồn yến sào thật sự
               an toàn và tinh khiết cho sức khỏe mọi gia đình Việt Nam.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function AboutPage() {
         {/* Wave decoration */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0,64L48,58.7C96,53,192,43,288,48C384,53,480,75,576,74.7C672,75,768,53,864,42.7C960,32,1056,32,1152,37.3C1248,43,1344,53,1392,58.7L1440,64L1440,80L0,80Z" 
+            <path d="M0,64L48,58.7C96,53,192,43,288,48C384,53,480,75,576,74.7C672,75,768,53,864,42.7C960,32,1056,32,1152,37.3C1248,43,1344,53,1392,58.7L1440,64L1440,80L0,80Z"
               className="fill-cream-50" />
           </svg>
         </div>
