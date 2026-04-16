@@ -20,7 +20,7 @@ export default function SmartPicks() {
     // Thuật toán Recommendation vi mô (Edge-level)
     for (const cat of viewedCategories) {
       const matches = mockProducts.filter(p => p.category === cat && p.active);
-      picks = [...picks, ...matches];
+      picks = [...picks, ...(matches as any)];
     }
     
     // Trộn ngẫu nhiên nhẹ và lấy 4 cái đầu tiên

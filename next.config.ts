@@ -7,7 +7,6 @@ const withPWA = withPWAInit({
   dest: "public",
   disable: process.env.NODE_ENV === "development", // Tắt PWA khi dev để không vướng bộ nhớ đệm
   register: true,
-  skipWaiting: true,
 });
 
 const nextConfig: NextConfig = {
@@ -25,6 +24,7 @@ const nextConfig: NextConfig = {
   },
   // Trailing slash giúp navigation hoạt động tốt trong Capacitor
   trailingSlash: isMobile,
+  turbopack: {},
 };
 
 export default withPWA(nextConfig);

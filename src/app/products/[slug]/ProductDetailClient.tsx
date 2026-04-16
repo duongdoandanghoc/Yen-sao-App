@@ -220,7 +220,7 @@ export default function ProductDetailClient({ product }: { product: ProductType 
 
           {activeTab === "usage" && (
             <div className="animate-fade-in custom-markdown">
-              {product.usage.split("\n").map((line, i) => {
+              {(product.usage || "").split("\n").map((line, i) => {
                 if (line.startsWith("- ")) return <li key={i} className="text-brown-600 ml-4 mb-1 list-disc">{line.substring(2)}</li>;
                 if (line.startsWith("**") && line.endsWith("**")) return <h3 key={i} className="font-serif font-bold text-brown-900 mt-4 mb-2">{line.slice(2, -2)}</h3>;
                 if (line.trim() === "") return <br key={i} />;
