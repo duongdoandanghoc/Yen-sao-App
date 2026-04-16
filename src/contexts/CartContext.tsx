@@ -3,6 +3,11 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from "react";
 import { CartItem, ProductType } from "@/types";
 
+// Cart data version - increment when ProductType schema changes
+const CART_VERSION = 2;
+const CART_STORAGE_KEY = "yensao-cart";
+const CART_VERSION_KEY = "yensao-cart-version";
+
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
@@ -16,6 +21,35 @@ type CartAction =
   | { type: "TOGGLE_CART" }
   | { type: "CLOSE_CART" }
   | { type: "LOAD_CART"; items: CartItem[] };
+
+/**
+ * Validate that a product ID is a valid MongoDB ObjectId (24 hex chars).
+ * This prevents old mockData IDs like "product-X" from causing checkout errors.
+ */
+function isValidObjectId(id: string): boolean {
+  return /^[0-9a-fA-F]{24}$/.test(id);
+}
+
+/**
+ * Validate and filter cart items, removing any with invalid/stale data.
+ */
+function validateCartItems(items: CartItem[]): CartItem[] {
+  return items.filter((item) => {
+    // Must have a product with valid ObjectId
+    if (!item.product?.id || !isValidObjectId(item.product.id)) {
+      return false;
+    }
+    // Must have required fields
+    if (!item.product.name || !item.product.slug || typeof item.product.price !== "number") {
+      return false;
+    }
+    // Must have valid quantity
+    if (!item.quantity || item.quantity < 1) {
+      return false;
+    }
+    return true;
+  });
+}
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -98,20 +132,44 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false });
 
-  // Load cart from localStorage on mount
+  // Load cart from localStorage on mount with version check and validation
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("yensao-cart");
-      if (saved) {
-        const items = JSON.parse(saved);
-        dispatch({ type: "LOAD_CART", items });
+      const savedVersion = localStorage.getItem(CART_VERSION_KEY);
+      const saved = localStorage.getItem(CART_STORAGE_KEY);
+
+      // If version mismatch, clear old cart data
+      if (savedVersion !== String(CART_VERSION)) {
+        localStorage.removeItem(CART_STORAGE_KEY);
+        localStorage.setItem(CART_VERSION_KEY, String(CART_VERSION));
+        return;
       }
-    } catch {}
+
+      if (saved) {
+        const rawItems = JSON.parse(saved);
+        // Validate and filter items - removes any with invalid ObjectIds
+        const validItems = validateCartItems(rawItems);
+
+        // If some items were invalid, we'll just load the valid ones
+        if (validItems.length !== rawItems.length) {
+          console.warn(
+            `Giỏ hàng: loại bỏ ${rawItems.length - validItems.length} sản phẩm không hợp lệ (dữ liệu cũ).`
+          );
+        }
+
+        dispatch({ type: "LOAD_CART", items: validItems });
+      }
+    } catch {
+      // If localStorage is corrupted, just start fresh
+      localStorage.removeItem(CART_STORAGE_KEY);
+      localStorage.setItem(CART_VERSION_KEY, String(CART_VERSION));
+    }
   }, []);
 
   // Save cart to localStorage on change
   useEffect(() => {
-    localStorage.setItem("yensao-cart", JSON.stringify(state.items));
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.items));
+    localStorage.setItem(CART_VERSION_KEY, String(CART_VERSION));
   }, [state.items]);
 
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);

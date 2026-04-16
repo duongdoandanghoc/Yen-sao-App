@@ -5,7 +5,8 @@ import { useCart } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/utils";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "@/lib/constants";
-import { Check, MapPin, CreditCard, ShoppingBag, ArrowLeft, Tag, X } from "lucide-react";
+import { LOYALTY_RATE } from "@/types";
+import { Check, MapPin, CreditCard, ShoppingBag, ArrowLeft, Tag, X, Award } from "lucide-react";
 import { Link } from "next-view-transitions";
 
 export default function CheckoutPage() {
@@ -32,6 +33,7 @@ export default function CheckoutPage() {
 
   const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
   const total = subtotal - discountAmount + shippingFee;
+  const loyaltyEarned = Math.floor(total / LOYALTY_RATE);
 
   const applyDiscount = () => {
     setDiscountError("");
@@ -72,6 +74,7 @@ export default function CheckoutPage() {
           paymentMethod: "COD",
           discountCode: discountApplied ? discountCode : undefined,
           discountAmount,
+          loyaltyPointsUsed: 0,
         }),
       });
       
@@ -112,8 +115,14 @@ export default function CheckoutPage() {
         <p className="text-brown-500 mt-2">Cảm ơn bạn đã tin tưởng Yến Sào Bình An, chúc bạn thật nhiều sức khỏe</p>
         <div className="card p-4 mt-6">
           <p className="text-sm text-brown-500">Mã đơn hàng</p>
-          <p className="text-lg font-bold text-primary-600 mt-1">{orderNumber}</p>
+          <p className="text-xl font-mono font-bold text-primary-600 mt-1">{orderNumber}</p>
         </div>
+        {loyaltyEarned > 0 && (
+          <div className="flex items-center justify-center gap-2 mt-4 px-4 py-2 bg-yellow-50 rounded-xl">
+            <Award size={18} className="text-yellow-500" />
+            <span className="text-sm font-medium text-yellow-700">+{loyaltyEarned} điểm tích lũy đã được cộng vào tài khoản!</span>
+          </div>
+        )}
         <p className="text-sm text-brown-500 mt-4">Chúng tôi sẽ liên hệ xác nhận đơn hàng qua điện thoại</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
           <Link href="/products" className="btn-primary">Tiếp tục mua sắm</Link>
@@ -339,6 +348,12 @@ export default function CheckoutPage() {
                 <span>Tổng cộng</span>
                 <span className="text-primary-600">{formatCurrency(total)}</span>
               </div>
+              {loyaltyEarned > 0 && (
+                <div className="flex items-center gap-1.5 text-xs text-yellow-600 mt-2">
+                  <Award size={14} />
+                  <span>Tích được <strong>{loyaltyEarned}</strong> điểm từ đơn này</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

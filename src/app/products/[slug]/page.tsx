@@ -25,6 +25,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     ...product,
     createdAt: product.createdAt.toISOString(),
     updatedAt: product.updatedAt.toISOString(),
+    flashSaleEnd: product.flashSaleEnd ? product.flashSaleEnd.toISOString() : null,
   };
 
   return <ProductDetailClient product={formattedProduct as any} />;

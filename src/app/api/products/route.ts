@@ -1,44 +1,62 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mockProducts } from "@/lib/mockData";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const category = searchParams.get("category");
-  const search = searchParams.get("search");
-  const sort = searchParams.get("sort") || "featured";
+  try {
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
+    const sort = searchParams.get("sort") || "featured";
 
-  let products = mockProducts.map((p, i) => ({
-    ...p,
-    id: `product-${i}`,
-    createdAt: new Date().toISOString(),
-  })).filter(p => p.active);
+    // Build where clause
+    const where: any = { active: true };
+    
+    if (category && category !== "ALL") {
+      where.category = category;
+    }
 
-  if (category && category !== "ALL") {
-    products = products.filter((p) => p.category === category);
+    if (search) {
+      const q = search.toLowerCase();
+      where.OR = [
+        { name: { contains: q, mode: "insensitive" } },
+        { shortDescription: { contains: q, mode: "insensitive" } },
+      ];
+    }
+
+    // Build orderBy
+    let orderBy: any;
+    switch (sort) {
+      case "price-asc":
+        orderBy = { price: "asc" };
+        break;
+      case "price-desc":
+        orderBy = { price: "desc" };
+        break;
+      case "rating":
+        orderBy = { averageRating: "desc" };
+        break;
+      case "newest":
+        orderBy = { createdAt: "desc" };
+        break;
+      default:
+        orderBy = { featured: "desc" };
+    }
+
+    const products = await prisma.product.findMany({
+      where,
+      orderBy,
+    });
+
+    // Format dates to ISO strings for frontend
+    const formattedProducts = products.map((p) => ({
+      ...p,
+      createdAt: p.createdAt.toISOString(),
+      updatedAt: p.updatedAt.toISOString(),
+    }));
+
+    return NextResponse.json({ products: formattedProducts, total: formattedProducts.length });
+  } catch (error) {
+    console.error("Lỗi lấy danh sách sản phẩm:", error);
+    return NextResponse.json({ error: "Đã xảy ra lỗi hệ thống" }, { status: 500 });
   }
-
-  if (search) {
-    const q = search.toLowerCase();
-    products = products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.shortDescription.toLowerCase().includes(q)
-    );
-  }
-
-  switch (sort) {
-    case "price-asc":
-      products.sort((a, b) => a.price - b.price);
-      break;
-    case "price-desc":
-      products.sort((a, b) => b.price - a.price);
-      break;
-    case "rating":
-      products.sort((a, b) => b.averageRating - a.averageRating);
-      break;
-    default:
-      products.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-  }
-
-  return NextResponse.json({ products, total: products.length });
 }

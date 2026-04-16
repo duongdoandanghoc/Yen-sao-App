@@ -6,16 +6,10 @@ import { ProductType } from "@/types";
 import { ArrowRight } from "lucide-react";
 
 interface FeaturedProductsProps {
-  products: Omit<ProductType, "id" | "createdAt">[];
+  products: ProductType[];
 }
 
 export default function FeaturedProducts({ products }: FeaturedProductsProps) {
-  // Add mock IDs and dates for display
-  const productsWithIds = products.map((p, i) => ({
-    ...p,
-    id: `mock-${i}`,
-    createdAt: new Date().toISOString(),
-  }));
 
   return (
     <section className="py-16 md:py-24">
@@ -31,8 +25,8 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {productsWithIds.map((product) => (
-            <ProductCard key={product.id} product={product as ProductType} />
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 

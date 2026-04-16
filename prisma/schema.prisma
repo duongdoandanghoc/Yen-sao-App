@@ -55,19 +55,31 @@ enum DiscountType {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  email         String    @unique
-  password      String
-  phone         String?
-  role          Role      @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String    @unique
+  password       String
+  phone          String?
+  role           Role      @default(USER)
+  avatar         String?
+  dateOfBirth    DateTime?
+  gender         String?
+  loyaltyPoints  Int       @default(0)
+  referralCode   String?
+  referredBy     String?
+  notifyOrders   Boolean   @default(true)
+  notifyPromo    Boolean   @default(true)
+  notifySystem   Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  addresses     Address[]
-  orders        Order[]
-  reviews       Review[]
-  subscriptions Subscription[]
+  addresses           Address[]
+  orders              Order[]
+  reviews             Review[]
+  subscriptions       Subscription[]
+  wishlist            Wishlist[]
+  notifications       Notification[]
+  loyaltyTransactions LoyaltyTransaction[]
 }
 
 model Address {
@@ -104,12 +116,18 @@ model Product {
   active           Boolean         @default(true)
   weight           String?
   origin           String?
+  isBundle         Boolean         @default(false)
+  bundleItems      String[]
+  bundleDiscount   Float?
+  flashSalePrice   Float?
+  flashSaleEnd     DateTime?
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
 
-  reviews          Review[]
-  orderItems       OrderItem[]
+  reviews           Review[]
+  orderItems        OrderItem[]
   subscriptionItems SubscriptionItem[]
+  wishlist          Wishlist[]
 }
 
 model Order {
@@ -120,6 +138,9 @@ model Order {
   subtotal        Float
   shippingFee     Float         @default(0)
   discount        Float         @default(0)
+  loyaltyDiscount Float         @default(0)
+  loyaltyUsed     Int           @default(0)
+  loyaltyEarned   Int           @default(0)
   total           Float
   paymentMethod   PaymentMethod @default(COD)
   paymentStatus   PaymentStatus @default(PENDING)
@@ -128,6 +149,9 @@ model Order {
   shippingAddress String
   note            String?
   discountCode    String?
+  referralCode    String?
+  trackingNumber  String?
+  trackingEvents  TrackingEvent[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -135,14 +159,20 @@ model Order {
   items OrderItem[]
 }
 
+type TrackingEvent {
+  status      String
+  description String
+  timestamp   DateTime
+}
+
 model OrderItem {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  orderId     String @db.ObjectId
-  productId   String @db.ObjectId
-  productName String
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  orderId      String  @db.ObjectId
+  productId    String  @db.ObjectId
+  productName  String
   productImage String?
-  price       Float
-  quantity    Int
+  price        Float
+  quantity     Int
 
   order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id])
@@ -154,6 +184,7 @@ model Review {
   productId String   @db.ObjectId
   rating    Int
   comment   String
+  images    String[]
   approved  Boolean  @default(true)
   createdAt DateTime @default(now())
 
@@ -210,4 +241,40 @@ model BlogPost {
   published  Boolean  @default(true)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Wishlist {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model LoyaltyTransaction {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  orderId     String?
+  points      Int
+  type        String   // EARN, REDEEM, BONUS, REFERRAL
+  description String
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  title     String
+  message   String
+  type      String   // ORDER, PROMOTION, SYSTEM, LOYALTY, REFERRAL
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

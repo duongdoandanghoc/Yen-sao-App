@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build:mobile": "cross-env NEXT_PUBLIC_IS_MOBILE=true next build && npx cap sync",
+    "api:fix": "node -e \"const fs=require('fs'); const glob=require('path'); const files=['src/app/api/orders/route.ts','src/app/api/admin/orders/[id]/route.ts','src/app/api/auth/[...nextauth]/route.ts','src/app/api/auth/register/route.ts']; files.forEach(f=>{if(fs.existsSync(f)){const c=fs.readFileSync(f,'utf8'); fs.writeFileSync(f, c.replace(/\\\"force-dynamic\\\"/g, '\\\"force-static\\\"'))}})\"",
+    "api:reset": "node -e \"const fs=require('fs'); const files=['src/app/api/orders/route.ts','src/app/api/admin/orders/[id]/route.ts','src/app/api/auth/[...nextauth]/route.ts','src/app/api/auth/register/route.ts']; files.forEach(f=>{if(fs.existsSync(f)){const c=fs.readFileSync(f,'utf8'); fs.writeFileSync(f, c.replace(/\\\"force-static\\\"/g, '\\\"force-dynamic\\\"'))}})\"",
+    "build:mobile": "npm run api:fix && cross-env NEXT_PUBLIC_IS_MOBILE=true next build && npm run api:reset && npx cap sync",
     "cap:android": "npx cap open android",
     "cap:ios": "npx cap open ios"
   },

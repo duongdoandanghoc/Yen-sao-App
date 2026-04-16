@@ -2,13 +2,14 @@
 
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, ShoppingCart, Users, ChevronLeft, BarChart3 } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, ChevronLeft, BarChart3, UserCircle } from "lucide-react";
 
 const sidebarItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Tổng quan" },
   { href: "/admin/products", icon: Package, label: "Sản phẩm" },
   { href: "/admin/orders", icon: ShoppingCart, label: "Đơn hàng" },
   { href: "/admin/customers", icon: Users, label: "Khách hàng" },
+  { href: "/admin/accounts", icon: UserCircle, label: "Tài khoản" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

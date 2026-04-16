@@ -10,10 +10,18 @@ import CTASection from "@/components/home/CTASection";
 
 export default async function HomePage() {
   // Lấy dữ liệu thực từ MongoDB 
-  const featuredProducts = await prisma.product.findMany({
+  const rawProducts = await prisma.product.findMany({
     where: { featured: true, active: true },
     take: 8,
   });
+
+  // Format dates from Prisma Date objects to strings for client components
+  const featuredProducts = rawProducts.map((p) => ({
+    ...p,
+    createdAt: p.createdAt.toISOString(),
+    updatedAt: p.updatedAt.toISOString(),
+    flashSaleEnd: p.flashSaleEnd ? p.flashSaleEnd.toISOString() : null,
+  }));
   
   const latestPosts = await prisma.blogPost.findMany({
     where: { published: true },

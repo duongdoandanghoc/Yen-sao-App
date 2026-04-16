@@ -40,10 +40,29 @@ export function slugify(text: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
+/**
+ * Generate a short, memorable order number.
+ * Format: YS-YYMMDD-XXXX
+ * - YS: Brand prefix (Yến Sào)
+ * - YYMMDD: Date (2-digit year + month + day)
+ * - XXXX: 4 alphanumeric chars (36^4 = 1,679,616 combinations per day)
+ * Example: YS-260416-A1B2
+ */
 export function generateOrderNumber(): string {
-  const timestamp = Date.now().toString(36).toUpperCase();
-  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-  return `YS-${timestamp}-${random}`;
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  const dateStr = `${yy}${mm}${dd}`;
+  
+  // Generate 4 random alphanumeric characters (0-9, A-Z)
+  const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let random = "";
+  for (let i = 0; i < 4; i++) {
+    random += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  
+  return `YS-${dateStr}-${random}`;
 }
 
 export function getStatusLabel(status: string): string {

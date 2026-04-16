@@ -4,20 +4,87 @@ import { Link } from "next-view-transitions";
 import { ProductType } from "@/types";
 import { useCart } from "@/contexts/CartContext";
 import { formatCurrency, getCategoryLabel } from "@/lib/utils";
-import { ShoppingBag, Star } from "lucide-react";
+import { ShoppingBag, Star, Heart } from "lucide-react";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface ProductCardProps {
   product: ProductType;
+  showWishlist?: boolean;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, showWishlist = true }: ProductCardProps) {
   const { addItem } = useCart();
+  const { data: session } = useSession();
+  const [wishlisted, setWishlisted] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
+  // Flash sale active?
+  const flashActive = product.flashSalePrice && product.flashSaleEnd
+    ? new Date(product.flashSaleEnd) > new Date()
+    : false;
+  const displayPrice = flashActive ? product.flashSalePrice! : product.price;
+
+  const handleAddToCart = () => {
+    addItem({ ...product, price: displayPrice });
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 1500);
+  };
+
+  const handleWishlist = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!session) {
+      window.location.href = "/login";
+      return;
+    }
+    if (wishlistLoading) return;
+    setWishlistLoading(true);
+    try {
+      if (wishlisted) {
+        // Can't remove without wishlist item ID here, so just toggle UI
+        setWishlisted(false);
+      } else {
+        const res = await fetch("/api/account/wishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId: product.id }),
+        });
+        if (res.ok || res.status === 200) setWishlisted(true);
+      }
+    } catch {}
+    finally { setWishlistLoading(false); }
+  };
+
   return (
-    <div className="card group overflow-hidden">
+    <div className="card group overflow-hidden relative">
+      {/* Wishlist Button */}
+      {showWishlist && (
+        <button
+          onClick={handleWishlist}
+          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center
+            shadow transition-all duration-200
+            ${wishlisted
+              ? "bg-pink-500 text-white shadow-md scale-110"
+              : "bg-white/80 text-brown-300 hover:text-pink-500 backdrop-blur-sm"}`}
+          title={wishlisted ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
+        >
+          <Heart size={15} className={wishlisted ? "fill-white" : ""} />
+        </button>
+      )}
+
+      {/* Flash Sale badge */}
+      {flashActive && (
+        <div className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg animate-pulse">
+          ⚡ FLASH SALE
+        </div>
+      )}
+
       {/* Image */}
       <Link href={`/products/${product.slug}`} className="block relative">
         <div className="aspect-square bg-cream-100 flex items-center justify-center overflow-hidden">
@@ -33,14 +100,16 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1">
-          {product.featured && (
-            <span className="badge-gold text-xs">⭐ Nổi bật</span>
-          )}
-          {discount > 0 && (
-            <span className="badge bg-error-500 text-white text-xs">-{discount}%</span>
-          )}
-        </div>
+        {!flashActive && (
+          <div className="absolute top-3 left-3 flex flex-col gap-1">
+            {product.featured && (
+              <span className="badge-gold text-xs">⭐ Nổi bật</span>
+            )}
+            {discount > 0 && (
+              <span className="badge bg-error-500 text-white text-xs">-{discount}%</span>
+            )}
+          </div>
+        )}
       </Link>
 
       {/* Content */}
@@ -73,12 +142,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Price */}
         <div className="flex items-center gap-2 mt-3">
-          <span className="text-lg font-bold text-primary-600">
-            {formatCurrency(product.price)}
+          <span className={`text-lg font-bold ${flashActive ? "text-red-600" : "text-primary-600"}`}>
+            {formatCurrency(displayPrice)}
           </span>
-          {product.originalPrice && (
+          {(discount > 0 || flashActive) && (
             <span className="text-sm text-brown-400 line-through">
-              {formatCurrency(product.originalPrice)}
+              {formatCurrency(product.originalPrice || product.price)}
             </span>
           )}
         </div>
@@ -90,12 +159,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Add to Cart */}
         <button
-          onClick={() => addItem(product)}
-          className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 bg-primary-50 text-primary-700 font-medium rounded-xl
-                     hover:bg-gold-gradient hover:text-white transition-all duration-300 active:scale-[0.98]"
+          onClick={handleAddToCart}
+          className={`w-full mt-3 flex items-center justify-center gap-2 py-2.5 font-medium rounded-xl
+            transition-all duration-300 active:scale-[0.98] text-sm
+            ${addedToCart
+              ? "bg-green-500 text-white"
+              : "bg-primary-50 text-primary-700 hover:bg-gold-gradient hover:text-white"}`}
         >
           <ShoppingBag size={16} />
-          <span className="text-sm">Thêm vào giỏ</span>
+          <span>{addedToCart ? "Đã thêm! ✓" : "Thêm vào giỏ"}</span>
         </button>
       </div>
     </div>

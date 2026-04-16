@@ -1,44 +1,50 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import AdminCustomersClient from "./AdminCustomersClient";
+import AdminAccountsClient from "./AdminAccountsClient";
 
-export default async function AdminCustomersPage() {
+export default async function AdminAccountsPage() {
   const session = await auth();
   if (!session || (session.user as any)?.role !== "ADMIN") {
     redirect("/");
   }
 
-  // Fetch real customer data with aggregated order info
   const users = await prisma.user.findMany({
-    where: { role: "USER" },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
       name: true,
       email: true,
       phone: true,
+      role: true,
       createdAt: true,
       orders: {
         select: {
+          id: true,
           total: true,
           status: true,
         }
-      }
+      },
     }
   });
 
-  const customers = users.map((user) => ({
+  const accounts = users.map((user) => ({
     id: user.id,
     name: user.name,
     email: user.email,
     phone: user.phone || "—",
-    orders: user.orders.length,
+    role: user.role,
+    createdAt: user.createdAt.toISOString(),
+    orderCount: user.orders.length,
     totalSpent: user.orders
       .filter(o => o.status !== "CANCELLED")
       .reduce((sum, o) => sum + o.total, 0),
-    joinDate: user.createdAt.toISOString(),
+    loyaltyPoints: Math.floor(
+      user.orders
+        .filter(o => o.status === "COMPLETED")
+        .reduce((sum, o) => sum + o.total, 0) / 1000
+    ),
   }));
 
-  return <AdminCustomersClient initialCustomers={customers} />;
+  return <AdminAccountsClient initialAccounts={accounts} />;
 }

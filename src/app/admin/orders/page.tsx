@@ -13,7 +13,16 @@ export default async function AdminOrdersPage() {
     orderBy: { createdAt: "desc" },
     include: {
       user: {
-        select: { name: true, phone: true }
+        select: { name: true, phone: true, email: true }
+      },
+      items: {
+        select: {
+          id: true,
+          productName: true,
+          productImage: true,
+          price: true,
+          quantity: true,
+        }
       }
     }
   });
