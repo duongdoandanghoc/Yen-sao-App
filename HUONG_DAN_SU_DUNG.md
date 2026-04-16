@@ -1378,65 +1378,179 @@ Nếu gặp vấn đề trong quá trình sử dụng, bạn có thể:
 
 ---
 
-## 17. Hướng Dẫn Tính Năng Mới (Cập nhật 16/04/2026)
-
-### 17.1. Trang Tài Khoản Người Dùng (Account Hub)
-
-Sau khi đăng nhập, khách hàng có thể truy cập **http://localhost:3000/account** để quản lý toàn bộ tài khoản.
-
-#### Các trang trong Account Hub:
-
-| Trang | Địa chỉ | Chức năng |
-|-------|---------|-----------|
-| 🏠 Tổng quan | `/account` | Menu nhanh, tóm tắt điểm và đơn hàng |
-| 👤 Thông tin cá nhân | `/account/profile` | Sửa tên, SĐT, ngày sinh, giới tính |
-| 📦 Đơn hàng | `/account/orders` | Xem tất cả đơn hàng + tracking timeline |
-| 📍 Địa chỉ | `/account/addresses` | Thêm/sửa/xóa địa chỉ nhận hàng |
-| ❤️ Yêu thích | `/account/wishlist` | Danh sách sản phẩm đã lưu |
-| 🏆 Điểm tích lũy | `/account/loyalty` | Xem điểm, lịch sử, hạng thành viên |
-| 🔔 Thông báo | `/account/notifications` | Cài đặt thông báo đơn hàng / khuyến mãi |
-| 🔐 Đổi mật khẩu | `/account/change-password` | Cập nhật mật khẩu |
+## 17. Hướng Dẫn Tùy Chỉnh Nội Dung Website
 
 ---
 
-### 17.2. Hệ Thống Điểm Tích Lũy & Hạng Thành Viên
+### 17.1. Đổi Tên Thương Hiệu & Thông Tin Liên Hệ
 
-#### Cách tích điểm:
-- Mỗi đơn hàng hoàn thành: **1.000đ chi tiêu = 1 điểm**
-- Ví dụ: Đơn 500.000đ → +500 điểm
+File cần sửa: **`src\lib\constants.ts`**
 
-#### Cách dùng điểm (giảm giá):
-- **1 điểm = 50đ giảm giá**
-- Tối đa dùng điểm cho **20% giá trị đơn hàng**
-- Ví dụ: Đơn 1.000.000đ → có thể dùng tối đa điểm tương đương 200.000đ (= 4.000 điểm)
+Mở file này bằng **Notepad** hoặc **VS Code**, bạn sẽ thấy:
 
-#### Hạng thành viên:
+```
+export const APP_NAME = "Yến Sào Bình An";
+export const APP_DESCRIPTION = "Yến sào cao cấp - Chất lượng vượt trội, sức khỏe bền lâu";
+```
 
-| Hạng | Icon | Điểm cần | Bonus điểm |
-|------|------|----------|-----------|
-| Đồng | 🥉 | 0+ điểm | +0% |
-| Bạc | 🥈 | 1.000+ điểm | +5% |
-| Vàng | 🥇 | 5.000+ điểm | +10% |
-| Kim Cương | 💎 | 20.000+ điểm | +15% |
+**Cách đổi tên thương hiệu:**
+- Sửa giá trị trong dấu `"..."` ở dòng `APP_NAME` thành tên mới
+- Sửa tương tự `APP_DESCRIPTION` nếu muốn đổi mô tả ngắn
 
----
+**Đổi thông tin liên hệ** (SĐT, email, địa chỉ):
 
-### 17.3. Dùng Điểm Khi Thanh Toán
+```
+export const CONTACT_INFO = {
+  phone: "0982 812 936",            ← Sửa SĐT hiển thị
+  phoneHref: "tel:0982812936",      ← Sửa SĐT gọi (không khoảng trắng)
+  email: "annguyen.lamviec@gmail.com",
+  address: "63 Thống Nhất, Xã Thanh Sơn, Tỉnh Phú Thọ",
+};
+```
 
-Tại trang thanh toán `/checkout`, bước 2 có **2 ô giảm giá nằm cạnh nhau**:
-
-**Ô trái — Mã giảm giá:** Nhập mã → Nhấn "Áp dụng"
-
-**Ô phải — Dùng điểm tích lũy:**
-- Hệ thống tự tải điểm hiện có sau khi đăng nhập
-- Dùng nút "−" và "+" để chọn số điểm (bước 100)
-- Nhấn "Dùng tất" để dùng tối đa cho phép
-- Thấy ngay số tiền giảm tương ứng
-- Nhấn "Bỏ" để hủy sử dụng điểm
+> 💡 Sau khi sửa xong: lưu file → chạy lại `npm run dev` để xem thay đổi → nếu ổn thì push GitHub.
 
 ---
 
-### 17.4. Quản Lý Mã Giảm Giá (Admin)
+### 17.2. Thay Hình Ảnh Sản Phẩm
+
+Hình ảnh sản phẩm được lưu trên **MongoDB Atlas** (dưới dạng URL) hoặc trong thư mục `public\`.
+
+#### Cách 1 — Qua trang Admin (khuyến nghị):
+
+1. Đăng nhập admin → Vào **http://localhost:3000/admin/products**
+2. Nhấn nút **✏️ Sửa** trên sản phẩm cần đổi ảnh
+3. Trong form chỉnh sửa, tìm ô **Hình ảnh (URL)**
+4. Thay URL cũ bằng URL hình ảnh mới
+
+**Cách lấy URL ảnh nhanh:**
+- Upload ảnh lên [imgbb.com](https://imgbb.com) (miễn phí) → Copy link ảnh dạng `https://i.ibb.co/...`
+- Hoặc dùng [Google Photos](https://photos.google.com) → Nhấn chuột phải ảnh → Sao chép địa chỉ ảnh
+
+#### Cách 2 — Đặt ảnh vào thư mục `public\`:
+
+1. Copy file ảnh (`.jpg`, `.png`, `.webp`) vào thư mục `D:\yen-sao-store\public\products\`
+2. Đặt tên ảnh ngắn gọn, không dấu, không khoảng trắng (ví dụ: `yen-tho-cao-cap.jpg`)
+3. URL ảnh sẽ là: `/products/yen-tho-cao-cap.jpg`
+4. Dùng URL này khi sửa sản phẩm qua Admin
+
+> ⚠️ **Khuyến nghị kích thước ảnh:** Tỉ lệ **1:1** (vuông), tối thiểu **600×600px**, tối đa 2MB để tải nhanh.
+
+---
+
+### 17.3. Thêm & Chỉnh Sửa Bài Viết (Mục Kiến Thức)
+
+Mục **Kiến thức** (`/blog`) lấy bài từ **MongoDB Atlas**. Bạn có thể thêm bài trực tiếp trong database.
+
+#### Cách thêm bài viết mới qua MongoDB Atlas:
+
+1. Truy cập [https://cloud.mongodb.com](https://cloud.mongodb.com) → Đăng nhập
+2. Chọn cluster → Nhấn **"Browse Collections"**
+3. Tìm database `yensao` → Collection **`BlogPost`**
+4. Nhấn nút **"Insert Document"** (nút xanh)
+5. Điền thông tin theo mẫu:
+
+```json
+{
+  "title": "10 Lợi Ích Của Yến Sào Với Sức Khỏe",
+  "slug": "loi-ich-yen-sao-suc-khoe",
+  "excerpt": "Yến sào không chỉ là món ăn bổ dưỡng mà còn mang lại nhiều lợi ích...",
+  "content": "Nội dung bài viết đầy đủ ở đây...",
+  "coverImage": "https://link-anh-bia.jpg",
+  "author": "Yến Sào Bình An",
+  "tags": ["sức khỏe", "dinh dưỡng"],
+  "published": true,
+  "createdAt": { "$date": "2026-04-16T00:00:00Z" },
+  "updatedAt": { "$date": "2026-04-16T00:00:00Z" }
+}
+```
+
+**Giải thích các trường:**
+
+| Trường | Bắt buộc | Ý nghĩa |
+|--------|----------|---------|
+| `title` | ✅ | Tiêu đề bài viết |
+| `slug` | ✅ | Đường dẫn URL (chữ thường, dấu gạch, không dấu tiếng Việt) |
+| `excerpt` | ✅ | Mô tả ngắn, hiện trên trang danh sách |
+| `content` | ✅ | Nội dung đầy đủ (có thể HTML) |
+| `coverImage` | ❌ | URL ảnh bìa (để trống sẽ dùng emoji mặc định) |
+| `author` | ✅ | Tên tác giả |
+| `tags` | ✅ | Mảng nhãn, ví dụ: `["sức khỏe", "bà bầu"]` |
+| `published` | ✅ | `true` = hiển thị; `false` = ẩn/nháp |
+
+> ⚠️ **Slug phải là duy nhất** — tức là chưa có bài nào dùng slug đó. Ví dụ: `"loi-ich-yen-sao-2"` thay vì `"loi-ich-yen-sao"` nếu đã tồn tại.
+
+#### Cách sửa bài viết đã có:
+
+1. Trong MongoDB Atlas → Collection `BlogPost`
+2. Tìm bài cần sửa → Nhấn biểu tượng **✏️ bút chì** bên phải
+3. Sửa trường muốn thay đổi → Nhấn **"Update"**
+
+#### Cách ẩn/xóa bài viết:
+
+- **Ẩn bài** (vẫn giữ dữ liệu): Sửa `"published": false`
+- **Xóa bài hoàn toàn**: Nhấn biểu tượng **🗑️ thùng rác** → Xác nhận
+
+---
+
+### 17.4. Thêm & Sửa Mục "Khách Hàng Nói Gì" (Đánh Giá)
+
+Mục đánh giá ở trang chủ được lưu **trong code** tại file:
+**`src\components\home\TestimonialsSection.tsx`**
+
+Mở file này bằng **VS Code** hoặc **Notepad**, bạn sẽ thấy mảng:
+
+```javascript
+const reviews = [
+  { rating: 5, comment: "Yến rất ngon, sợi dày dai...", userName: "Nguyễn Thanh Hoa" },
+  { rating: 5, comment: "Mua làm quà biếu Tết...",      userName: "Trần Văn Minh" },
+  { rating: 4, comment: "Chất lượng tốt, giao hàng nhanh...", userName: "Lê Thị Mai" },
+  // ... thêm dòng tại đây
+];
+```
+
+#### Thêm đánh giá mới:
+
+Thêm dòng mới vào cuối mảng (trước dấu `]`):
+
+```javascript
+{ rating: 5, comment: "Sản phẩm rất tốt, con mình ngủ ngon hơn sau khi dùng.", userName: "Nguyễn Thị Lan" },
+```
+
+**Giải thích:**
+| Trường | Ý nghĩa | Giá trị |
+|--------|---------|---------|
+| `rating` | Số sao | `1` đến `5` |
+| `comment` | Nội dung đánh giá | Chuỗi văn bản trong dấu `"..."` |
+| `userName` | Tên khách hiển thị | Tên thật hoặc rút gọn |
+
+#### Xóa đánh giá:
+
+Xóa nguyên dòng `{ rating: ..., comment: ..., userName: ... },` của đánh giá muốn bỏ.
+
+#### Sửa đánh giá:
+
+Sửa trực tiếp nội dung trong dấu `"..."` của trường cần thay đổi.
+
+> ⚠️ **Lưu ý quan trọng:**
+> - Mỗi dòng đánh giá phải kết thúc bằng **dấu phẩy** `,` (trừ dòng cuối cùng)
+> - Không được xóa dấu `{` hay `}` bọc bên ngoài
+> - Sau khi sửa xong: lưu file → `npm run dev` kiểm tra → push GitHub
+
+#### Ví dụ mảng hoàn chỉnh sau khi thêm 2 đánh giá:
+
+```javascript
+const reviews = [
+  { rating: 5, comment: "Yến rất ngon, sợi dày dai.", userName: "Nguyễn Thanh Hoa" },
+  { rating: 4, comment: "Giao hàng nhanh, đóng gói cẩn thận.", userName: "Trần Minh" },
+  { rating: 5, comment: "Đánh giá mới của tôi.", userName: "Khách mới A" },   ← mới thêm
+  { rating: 5, comment: "Thêm cái này nữa.", userName: "Khách mới B" }         ← mới thêm (không có dấu phẩy ở cuối MỌI)
+];
+```
+
+---
+
+### 17.5. Quản Lý Mã Giảm Giá
 
 #### Mã giảm giá hiện có:
 
@@ -1446,72 +1560,37 @@ Tại trang thanh toán `/checkout`, bước 2 có **2 ô giảm giá nằm cạ
 | `FREESHIP` | Giảm cố định | 30.000đ | 300.000đ |
 | `WELCOME20` | Giảm % | 20% | 1.000.000đ |
 
-#### Cách thêm mã giảm giá mới:
+#### Cách thêm/xóa mã giảm giá:
 
-1. Mở file: `src\app\checkout\page.tsx`
-2. Tìm đoạn code trong hàm `applyDiscount` (khoảng dòng 98-103):
-   ```
-   const discounts = {
-     YENSAO10: { type: "percent", value: 10, min: 500000 },
-     FREESHIP: { type: "fixed", value: 30000, min: 300000 },
-     WELCOME20: { type: "percent", value: 20, min: 1000000 },
-   };
-   ```
-3. Thêm dòng mới (ví dụ mã giảm 15% cho đơn từ 700.000đ):
-   ```
-   TETHOLIDAY: { type: "percent", value: 15, min: 700000 },
-   ```
-4. Lưu file → Push GitHub → Vercel tự deploy
+Mở file: **`src\app\checkout\page.tsx`** → Tìm đoạn:
 
-#### Cách xóa mã giảm giá:
-- Xóa dòng tương ứng trong đoạn code trên → lưu → push GitHub
+```javascript
+const discounts = {
+  YENSAO10: { type: "percent", value: 10, min: 500000 },
+  FREESHIP:  { type: "fixed",   value: 30000, min: 300000 },
+  WELCOME20: { type: "percent", value: 20, min: 1000000 },
+};
+```
 
-#### Giải thích các trường:
-| Trường | Ý nghĩa | Ví dụ |
-|--------|---------|-------|
-| `type: "percent"` | Giảm theo % | `value: 10` = giảm 10% |
-| `type: "fixed"` | Giảm số tiền cố định | `value: 30000` = giảm 30.000đ |
-| `min` | Đơn hàng tối thiểu (đồng) | `500000` = đơn từ 500.000đ |
+**Thêm mã mới** — chèn dòng trước dấu `}`:
+```javascript
+TETHOLIDAY: { type: "percent", value: 15, min: 700000 },
+```
 
----
+**Xóa mã** — xóa nguyên dòng tương ứng.
 
-### 17.5. Tính Năng Yêu Thích (Wishlist)
+| Trường | Ý nghĩa |
+|--------|---------|
+| `"percent"` | Giảm theo % giá trị đơn |
+| `"fixed"` | Giảm số tiền cố định (đơn vị: đồng) |
+| `value` | Phần trăm hoặc số tiền giảm |
+| `min` | Giá trị đơn hàng tối thiểu để áp dụng (đơn vị: đồng) |
 
-- Mỗi card sản phẩm có **nút ❤️** góc trên bên phải
-- Nhấn ❤️ → Sản phẩm được lưu vào Yêu thích (icon chuyển đỏ/hồng)
-- Xem danh sách tại: `/account/wishlist`
-- Yêu cầu đăng nhập. Nếu chưa đăng nhập, nhấn ❤️ sẽ chuyển đến trang đăng nhập
-
----
-
-### 17.6. Admin Dashboard Nâng Cấp
-
-Trang `/admin` đã được nâng cấp:
-
-- **4 thẻ thống kê** có thể nhấn vào → dẫn tới trang tương ứng
-- **Biểu đồ thanh** thể hiện đơn hàng theo từng trạng thái
-- **Đơn hàng mới nhất** — xem chi tiết sản phẩm trong từng đơn
-- **Tài khoản mới nhất** — danh sách user đăng ký gần đây
-
-Trang `/admin/accounts` — Quản lý tài khoản:
-- Xem hạng thành viên + điểm tích lũy của từng user
-- Badge màu theo hạng (Đồng/Bạc/Vàng/Kim Cương)
-
-#### Mã đơn hàng mới:
-Format: **`YS-YYMMDD-XXXX`** (ví dụ: `YS-260416-A1B2`)
-
----
-
-### 17.7. Xử Lý Lỗi Thường Gặp Sau Cập Nhật
-
-| Lỗi | Nguyên nhân | Cách sửa |
-|-----|-------------|---------|
-| Điểm hiển thị 0 dù đã mua hàng | Dữ liệu chưa đồng bộ | Truy cập `/account/loyalty` — hệ thống tự đồng bộ khi vào trang |
-| Đăng nhập lỗi "server error" | API auth bị static | Đã vá — push code mới nhất lên GitHub |
-| Giỏ hàng báo "dữ liệu cũ" | ID sản phẩm cũ lưu trong cache | Xóa cache trình duyệt (Ctrl+Shift+Delete) hoặc mở tab ẩn danh |
+> 💡 Sau khi sửa: lưu file → push GitHub → Vercel tự deploy khoảng 1–2 phút.
 
 ---
 
 > 🎉 **Chúc bạn kinh doanh thành công với Yến Sào Bình An!**
 >
 > Website được thiết kế với ❤️ dành cho khách hàng Việt Nam.
+
