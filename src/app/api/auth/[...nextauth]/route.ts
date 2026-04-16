@@ -2,9 +2,10 @@ import { handlers } from "@/lib/auth";
 
 const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
 
-export const dynamic = "force-static";
+// Default: force-dynamic for web (Vercel). Mobile build script overrides to force-static.
+export const dynamic = "force-dynamic";
 
-// generateStaticParams bắt buộc cho catch-all route khi static export
+// generateStaticParams only needed for mobile static export
 export function generateStaticParams() {
   if (isMobile) {
     return [{ nextauth: ["signin"] }, { nextauth: ["signout"] }, { nextauth: ["session"] }];
@@ -13,4 +14,3 @@ export function generateStaticParams() {
 }
 
 export const { GET, POST } = handlers;
-

@@ -4,8 +4,8 @@ import { prisma } from "@/lib/prisma";
 
 const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
 
-// Web cần dynamic để nhận POST requests, mobile thì cho phép static
-export const dynamic = "force-static";
+// Default: force-dynamic for web. Mobile build script overrides to force-static.
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   if (isMobile) {

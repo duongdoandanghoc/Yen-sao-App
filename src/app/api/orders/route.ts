@@ -6,7 +6,7 @@ import { LOYALTY_RATE } from "@/types";
 
 const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   if (isMobile) {
